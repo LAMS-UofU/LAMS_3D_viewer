@@ -20,11 +20,12 @@ public class LamToObjConverter {
     private File lamFile;
     private File saveFile;
     private ArrayList<String> objContents;
-    private ArrayList<Face> faces;
-    private ArrayList<SphericalCoordinate> spherical;
-    private ArrayList<CartesianCoordinate> cartesian;
+    public ArrayList<Face> faces;
+    public ArrayList<SphericalCoordinate> spherical;
+    public ArrayList<CartesianCoordinate> cartesian;
     
     public LamToObjConverter(){
+        faces = new ArrayList<Face>();
         spherical = new ArrayList<SphericalCoordinate>();
         cartesian = new ArrayList<CartesianCoordinate>();
     }
@@ -57,6 +58,10 @@ public class LamToObjConverter {
         }
     }
     
+    public Obj3D getObj(){
+        return new Obj3D(this.cartesian, this.faces);
+    }
+    
     /**This method will get the vertices text needed for the .obj file from the Cartesian ArrayList object containing
      * the CartesianCoordinate objects.
      * 
@@ -67,10 +72,9 @@ public class LamToObjConverter {
         }
     }
     
-    public void getFaces(){  
-        if(cartesian.size()>0){
-            ArrayList<Face> faces = new ArrayList<Face>();
-            for(int i = 0;i<cartesian.size()-1;i++){
+    public void createFaces(){
+        if(this.cartesian.size()>0){
+            for(int i = 0;i<this.cartesian.size()-1;i++){
                 //FloatPair p = new FloatPair(spherical.get(i).phi,spherical.get(i).theta);
                 int v1 = -1;
                 double distance1 = -1.0;
@@ -80,9 +84,9 @@ public class LamToObjConverter {
                 double distance3 = -1.0;
                 int v4 = -1;
                 double distance4 = -1.0;
-                for(int j = 0;j<cartesian.size();j++){
+                for(int j = 0;j<this.cartesian.size();j++){
                     if(j!= i){
-                        double distance = cartesian.get(i).doubleDistance(cartesian.get(j));
+                        double distance = this.cartesian.get(i).doubleDistance(this.cartesian.get(j));
                         if(distance1==-1){
                             distance1 = distance;
                             v1 = j;
@@ -119,28 +123,32 @@ public class LamToObjConverter {
                 }
                 if(v1!=-1 && v2!=-1){
                     if(v1!=v2){
-                        faces.add(new Face(i+2,v1+1,v2+1));
+                        this.faces.add(new Face(i+2,v1+1,v2+1));
                     }
                     if(v3!=-1){
                         if(v2!=v3){
-                            faces.add(new Face(i+2,v2+1,v3+1));
+                            this.faces.add(new Face(i+2,v2+1,v3+1));
                         }
                         if(v3!=v1){
-                            faces.add(new Face(i+2,v3+1,v1+1));
+                            this.faces.add(new Face(i+2,v3+1,v1+1));
                         }
                         if(v4!=-1){
                             if(v3!=v4);
-                                faces.add(new Face(i+2,v3+1,v4+1));
+                                this.faces.add(new Face(i+2,v3+1,v4+1));
                             if(v4!=v1);
-                                faces.add(new Face(i+2,v4+1,v1+1));
+                                this.faces.add(new Face(i+2,v4+1,v1+1));
                             if(v4!=v2);
-                                faces.add(new Face(i+2,v4+1,v2+1));
+                                this.faces.add(new Face(i+2,v4+1,v2+1));
                         }
                     }
                         
                 }
             }
-           
+        }
+    }
+    
+    public void getFaces(){  
+        if(faces.size()>0){   
             for(Face f:faces){
                 if(f.isTriangle){
                     objContents.add("f  " + f.v1 + "  " + f.v2 + "  " + f.v3);
@@ -161,6 +169,7 @@ public class LamToObjConverter {
         this.objContents = new ArrayList<String>();
         this.getVertices();
         objContents.add("\r\n");
+        this.createFaces();
         this.getFaces();
         try{
             FileWriter fw = new FileWriter(objFile);
