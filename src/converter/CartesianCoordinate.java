@@ -9,7 +9,7 @@ package converter;
  *
  * @author tyjensen
  */
-public class CartesianCoordinate {
+public class CartesianCoordinate implements Cartesian {
     public float x;
     public float y;
     public float z;
@@ -44,4 +44,20 @@ public class CartesianCoordinate {
         Double zret = new Double(this.z - cc.z);
         return Math.sqrt(Math.pow(xret, 2.0)+Math.pow(yret, 2.0) + Math.pow(zret, 2.0));
     }
+    
+    public CartesianCoordinate add(CartesianCoordinate cc){
+        return new CartesianCoordinate(this.x+cc.x,this.y +cc.y,this.z+cc.z);
+    }
+    
+    public CartesianCoordinate sub(CartesianCoordinate cc){
+        return new CartesianCoordinate(this.x-cc.x,this.y-cc.y,this.z-cc.z);
+    }
+    
+    public CartesianVector getVector(){
+        return new CartesianVector(this.x,this.y,this.z);
+    }
+    
+    
+    
+    
 }

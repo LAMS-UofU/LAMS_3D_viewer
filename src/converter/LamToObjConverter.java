@@ -122,23 +122,36 @@ public class LamToObjConverter {
                     }
                 }
                 if(v1!=-1 && v2!=-1){
+                    Face f;
                     if(v1!=v2){
-                        this.faces.add(new Face(i+2,v1+1,v2+1));
+                        f = new Face(this.cartesian.get(i+1),this.cartesian.get(v1),this.cartesian.get(v2));
+                        f.calculateFaceNormal();
+                        this.faces.add(f);
                     }
                     if(v3!=-1){
                         if(v2!=v3){
-                            this.faces.add(new Face(i+2,v2+1,v3+1));
+                            f = new Face(this.cartesian.get(i+1),this.cartesian.get(v2),this.cartesian.get(v3));
+                            f.calculateFaceNormal();
+                            this.faces.add(f);
                         }
                         if(v3!=v1){
-                            this.faces.add(new Face(i+2,v3+1,v1+1));
+                            f = new Face(this.cartesian.get(i+1),this.cartesian.get(v3),this.cartesian.get(v1));
+                            f.calculateFaceNormal();
+                            this.faces.add(f);
                         }
                         if(v4!=-1){
                             if(v3!=v4);
-                                this.faces.add(new Face(i+2,v3+1,v4+1));
+                                f = new Face(this.cartesian.get(i+1),this.cartesian.get(v3),this.cartesian.get(v4));
+                                f.calculateFaceNormal();
+                                this.faces.add(f);
                             if(v4!=v1);
-                                this.faces.add(new Face(i+2,v4+1,v1+1));
+                                f = new Face(this.cartesian.get(i+1),this.cartesian.get(v4),this.cartesian.get(v1));
+                                f.calculateFaceNormal();
+                                this.faces.add(f);
                             if(v4!=v2);
-                                this.faces.add(new Face(i+2,v4+1,v2+1));
+                                f = new Face(this.cartesian.get(i+1),this.cartesian.get(v4),this.cartesian.get(v2));
+                                f.calculateFaceNormal();
+                                this.faces.add(f);
                         }
                     }
                         
