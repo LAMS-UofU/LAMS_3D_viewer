@@ -84,6 +84,17 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     static boolean zAxisEnableObjViewer = true;
     static boolean xyGridEnableObjViewer = true;
     
+    static Color backgroundColorPointCloudViewer = Color.BLACK;
+    static Color pointColorPointCloudViewer = Color.RED;
+    static Color xAxisColorPointCloudViewer = Color.GREEN;
+    static Color yAxisColorPointCloudViewer = Color.BLUE;
+    static Color zAxisColorPointCloudViewer = Color.RED;
+    static Color xyGridColorPointCloudViewer = Color.LIGHT_GRAY;
+    static boolean xAxisEnablePointCloudViewer = false;
+    static boolean yAxisEnablePointCloudViewer = false;
+    static boolean zAxisEnablePointCloudViewer = true;
+    static boolean xyGridEnablePointCloudViewer = false;
+    
     public static void main(String[] args){
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -193,7 +204,14 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                         LAMS.xAxisColorObjViewer.getRed() + "," + LAMS.xAxisColorObjViewer.getGreen() + "," + LAMS.xAxisColorObjViewer.getBlue() + ':' + 
                         LAMS.yAxisColorObjViewer.getRed() + "," + LAMS.yAxisColorObjViewer.getGreen() + "," + LAMS.yAxisColorObjViewer.getBlue() + ':' +
                         LAMS.zAxisColorObjViewer.getRed() + "," + LAMS.zAxisColorObjViewer.getGreen() + "," + LAMS.zAxisColorObjViewer.getBlue() + ':' +
-                        LAMS.xyGridColorObjViewer.getRed() + "," + LAMS.xyGridColorObjViewer.getGreen() + "," + LAMS.xyGridColorObjViewer.getBlue();
+                        LAMS.xyGridColorObjViewer.getRed() + "," + LAMS.xyGridColorObjViewer.getGreen() + "," + LAMS.xyGridColorObjViewer.getBlue() + ':' +
+                        LAMS.backgroundColorPointCloudViewer.getRed() + "," + LAMS.backgroundColorPointCloudViewer.getGreen() + "," + LAMS.backgroundColorPointCloudViewer.getBlue() + ':' +
+                        LAMS.pointColorPointCloudViewer.getRed() + "," + LAMS.pointColorPointCloudViewer.getGreen() + "," + LAMS.pointColorPointCloudViewer.getBlue() + ':' +
+                        LAMS.xAxisColorPointCloudViewer.getRed() + "," + LAMS.xAxisColorPointCloudViewer.getGreen() + "," + LAMS.xAxisColorPointCloudViewer.getBlue() + ':' +
+                        LAMS.yAxisColorPointCloudViewer.getRed() + "," + LAMS.yAxisColorPointCloudViewer.getGreen() + "," + LAMS.yAxisColorPointCloudViewer.getBlue() + ':' +
+                        LAMS.zAxisColorPointCloudViewer.getRed() + "," + LAMS.zAxisColorPointCloudViewer.getGreen() + "," + LAMS.zAxisColorPointCloudViewer.getBlue() + ':' +
+                        LAMS.xyGridColorPointCloudViewer.getRed() + "," + LAMS.xyGridColorPointCloudViewer.getGreen() + "," + LAMS.xyGridColorPointCloudViewer.getBlue();
+                        
                 java.awt.EventQueue.invokeLater(new Runnable() {
                     public void run() {
                         
@@ -274,7 +292,12 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         GL2 gl = drawable.getGL().getGL2();
         GLU glu = new GLU();
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
-        gl.glClearColor(this.backgroundColorObjViewer.getRed(), this.backgroundColorObjViewer.getGreen(), this.backgroundColorObjViewer.getBlue(), 0f);
+        if(LAMS.pointCloudFlag){
+            gl.glClearColor(this.backgroundColorPointCloudViewer.getRed(), this.backgroundColorPointCloudViewer.getGreen(), this.backgroundColorPointCloudViewer.getBlue(), 0f);
+        }
+        else{
+            gl.glClearColor(this.backgroundColorObjViewer.getRed(), this.backgroundColorObjViewer.getGreen(), this.backgroundColorObjViewer.getBlue(), 0f);
+        }
         
         
         gl.glMatrixMode(GL2.GL_PROJECTION);
@@ -299,12 +322,12 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         
         if(this.pointCloudFlag){
             gl.glDisable(GL2.GL_LIGHTING);
-            createGrid(drawable.getGL().getGL2(),1.0f,1.0f,1.0f, 0,100);
+            createGrid(drawable.getGL().getGL2(),50,25);
             this.drawPointCloud(drawable.getGL().getGL2(), this.lamConverter.cartesian);
         }
         else{
             gl.glDisable(GL2.GL_LIGHTING);
-            createGrid(drawable.getGL().getGL2(),0.5f,0.5f,0.5f, 100,50);
+            createGrid(drawable.getGL().getGL2(), 100,50);
             /*gl.glEnable( GL2.GL_LIGHTING );  
             gl.glEnable( GL2.GL_LIGHT0 );  
             gl.glEnable( GL2.GL_NORMALIZE );
@@ -416,7 +439,7 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     }
     
     public void drawPointCloud(GL2 gl, ArrayList<CartesianCoordinate> cartesian){
-        gl.glColor3f(1,0,0);
+        gl.glColor3f(LAMS.pointColorPointCloudViewer.getRed()/255.0f,LAMS.pointColorPointCloudViewer.getGreen()/255.0f,LAMS.pointColorPointCloudViewer.getBlue()/255.0f);
         gl.glPointSize(10);
         gl.glBegin(GL2.GL_POINTS);
         for(CartesianCoordinate cc:cartesian){
@@ -434,11 +457,9 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         }
     }
     
-    public void createGrid(GL2 gl, float r, float g, float b, int gridSize, int gridLineSize){
-        
-        if (LAMS.xyGridEnableObjViewer){
-            gl.glColor3f(LAMS.xyGridColorObjViewer.getRed()/255.0f,LAMS.xyGridColorObjViewer.getGreen()/255.0f,LAMS.xyGridColorObjViewer.getBlue()/255.0f);
-
+    public void createGrid(GL2 gl, int gridSize, int gridLineSize){
+        if(LAMS.pointCloudFlag && LAMS.xyGridEnablePointCloudViewer){
+            gl.glColor3f(LAMS.xyGridColorPointCloudViewer.getRed()/255.0f,LAMS.xyGridColorPointCloudViewer.getGreen()/255.0f,LAMS.xyGridColorPointCloudViewer.getBlue()/255.0f);
             for(int i = -gridSize/2;i<gridSize/2;i++){
                 for(int j = -gridSize/2;j<gridSize/2;j++){
                     gl.glBegin (GL2.GL_LINES);
@@ -452,21 +473,57 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                 }
             }
         }
-        if(LAMS.zAxisEnableObjViewer){
+        else if (LAMS.xyGridEnableObjViewer && !LAMS.pointCloudFlag){
+            gl.glColor3f(LAMS.xyGridColorObjViewer.getRed()/255.0f,LAMS.xyGridColorObjViewer.getGreen()/255.0f,LAMS.xyGridColorObjViewer.getBlue()/255.0f);
+            for(int i = -gridSize/2;i<gridSize/2;i++){
+                for(int j = -gridSize/2;j<gridSize/2;j++){
+                    gl.glBegin (GL2.GL_LINES);
+                    gl.glVertex3f(-gridLineSize, j, 0.0f);
+                    gl.glVertex3f(gridLineSize, j, 0.0f);
+                    gl.glEnd();
+                    gl.glBegin (GL2.GL_LINES);
+                    gl.glVertex3f(i, -gridLineSize, 0.0f);
+                    gl.glVertex3f(i, gridLineSize, 0.0f);
+                    gl.glEnd();
+                }
+            }
+        }
+        if(LAMS.pointCloudFlag && LAMS.zAxisEnablePointCloudViewer){
+            gl.glColor3f(LAMS.zAxisColorPointCloudViewer.getRed()/255.0f,LAMS.zAxisColorPointCloudViewer.getGreen()/255.0f,LAMS.zAxisColorPointCloudViewer.getBlue()/255.0f);
+            gl.glBegin (GL2.GL_LINES);
+            gl.glVertex3f(0,0,-1000);
+            gl.glVertex3f(0,0,1000);
+            gl.glEnd();
+        }
+        else if(LAMS.zAxisEnableObjViewer && !LAMS.pointCloudFlag){
             gl.glColor3f(LAMS.zAxisColorObjViewer.getRed()/255.0f,LAMS.zAxisColorObjViewer.getGreen()/255.0f,LAMS.zAxisColorObjViewer.getBlue()/255.0f);
             gl.glBegin (GL2.GL_LINES);
             gl.glVertex3f(0,0,-1000);
             gl.glVertex3f(0,0,1000);
             gl.glEnd();
         }
-        if(LAMS.yAxisEnableObjViewer){
+        if(LAMS.pointCloudFlag && LAMS.yAxisEnablePointCloudViewer){
+            gl.glColor3f(LAMS.yAxisColorPointCloudViewer.getRed()/255.0f,LAMS.yAxisColorPointCloudViewer.getGreen()/255.0f,LAMS.yAxisColorPointCloudViewer.getBlue()/255.0f);
+            gl.glBegin (GL2.GL_LINES);
+            gl.glVertex3f(0,-1000,0);
+            gl.glVertex3f(0,1000,0);
+            gl.glEnd();
+        }
+        else if(LAMS.yAxisEnableObjViewer && !LAMS.pointCloudFlag){
             gl.glColor3f(LAMS.yAxisColorObjViewer.getRed()/255.0f,LAMS.yAxisColorObjViewer.getGreen()/255.0f,LAMS.yAxisColorObjViewer.getBlue()/255.0f);
             gl.glBegin (GL2.GL_LINES);
             gl.glVertex3f(0,-1000,0);
             gl.glVertex3f(0,1000,0);
             gl.glEnd();
         }
-        if(LAMS.xAxisEnableObjViewer){
+        if(LAMS.pointCloudFlag && LAMS.xAxisEnablePointCloudViewer){
+            gl.glColor3f(LAMS.xAxisColorPointCloudViewer.getRed()/255.0f,LAMS.xAxisColorPointCloudViewer.getGreen()/255.0f,LAMS.xAxisColorPointCloudViewer.getBlue()/255.0f);
+            gl.glBegin (GL2.GL_LINES);
+            gl.glVertex3f(-1000,0,0);
+            gl.glVertex3f(1000,0,0);
+            gl.glEnd();
+        }
+        else if(LAMS.xAxisEnableObjViewer && !LAMS.pointCloudFlag){
             gl.glColor3f(LAMS.xAxisColorObjViewer.getRed()/255.0f,LAMS.xAxisColorObjViewer.getGreen()/255.0f,LAMS.xAxisColorObjViewer.getBlue()/255.0f);
             gl.glBegin (GL2.GL_LINES);
             gl.glVertex3f(-1000,0,0);

@@ -54,11 +54,6 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="xyGridCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="xyGridColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
-                          </Group>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" attributes="0">
                                   <Component id="zAxisCheckBox" min="-2" max="-2" attributes="0"/>
@@ -81,10 +76,42 @@
                                   <Component id="backgroundColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="xyGridCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="xyGridColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="zAxisCheckBoxPointCloud" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="xyGridCheckBoxPointCloud" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="yAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="xAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="yAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="xAxisColorLabelPointCloud" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="verticesColorPointCloudColorLabel" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="xyGridColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="zAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="backgroundColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jSeparator1" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="271" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -94,31 +121,67 @@
               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="backgroundColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="jLabel1" min="-2" pref="19" max="-2" attributes="0"/>
+                  <Component id="backgroundColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="xAxisCheckBox" min="-2" max="-2" attributes="0"/>
                   <Component id="xAxisColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="yAxisCheckBox" min="-2" max="-2" attributes="0"/>
                   <Component id="yAxisColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="zAxisCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="zAxisColorLabel" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="zAxisCheckBox" min="-2" max="-2" attributes="0"/>
+                  <Component id="zAxisColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="xyGridCheckBox" min="-2" max="-2" attributes="0"/>
+                  <Component id="xyGridColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="xyGridCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="xyGridColorLabel" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
+              <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                  <Component id="backgroundColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="269" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="xAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="yAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="zAxisCheckBoxPointCloud" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="zAxisColorLabelPointCloud" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="xyGridColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="xyGridCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="verticesColorPointCloudColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="xAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="yAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -158,7 +221,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Object Viewer Orientation Guids"/>
+        <Property name="text" type="java.lang.String" value="Object Viewer Orientation Guides"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="xAxisColorLabel">
@@ -219,6 +282,121 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Background"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Point Cloud View Settings "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Background"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="xAxisCheckBoxPointCloud">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Show X Axis"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="xAxisCheckBoxPointCloudActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="yAxisCheckBoxPointCloud">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Show Y Axis"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="yAxisCheckBoxPointCloudActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="zAxisCheckBoxPointCloud">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Show Z Axis"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="zAxisCheckBoxPointCloudActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="xyGridCheckBoxPointCloud">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Show XY Grid"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="xyGridCheckBoxPointCloudActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="xAxisColorLabelPointCloud">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="opaque" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="xAxisColorLabelPointCloudMouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="yAxisColorLabelPointCloud">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="opaque" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="yAxisColorLabelPointCloudMouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="zAxisColorLabelPointCloud">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="opaque" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="zAxisColorLabelPointCloudMouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="xyGridColorLabelPointCloud">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="opaque" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="xyGridColorLabelPointCloudMouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="verticesColorPointCloudColorLabel">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="opaque" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="verticesColorPointCloudColorLabelMouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="backgroundColorLabelPointCloud">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="opaque" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="backgroundColorLabelPointCloudMouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel9">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="PointCloud Vertices"/>
       </Properties>
     </Component>
   </SubComponents>

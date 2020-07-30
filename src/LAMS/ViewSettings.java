@@ -36,6 +36,18 @@ public class ViewSettings extends javax.swing.JFrame {
         this.zAxisColorObjViewer = new Color(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
         temp = colors[4].split(",");
         this.gridColorObjViewer = new Color(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
+        temp = colors[5].split(",");
+        this.backgroundColorPointCloudViewer = new Color(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
+        temp = colors[6].split(",");
+        this.pointColorPointCloudViewer = new Color(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
+        temp = colors[7].split(",");
+        this.xAxisColorPointCloudViewer = new Color(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
+        temp = colors[8].split(",");
+        this.yAxisColorPointCloudViewer = new Color(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
+        temp = colors[9].split(",");
+        this.zAxisColorPointCloudViewer = new Color(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
+        temp = colors[10].split(",");
+        this.gridColorPointCloudViewer = new Color(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
     }
     
     public void setLabelColors(){
@@ -44,6 +56,12 @@ public class ViewSettings extends javax.swing.JFrame {
         yAxisColorLabel.setBackground(yAxisColorObjViewer);
         zAxisColorLabel.setBackground(zAxisColorObjViewer);
         xyGridColorLabel.setBackground(gridColorObjViewer);
+        backgroundColorLabelPointCloud.setBackground(this.backgroundColorPointCloudViewer);
+        xAxisColorLabelPointCloud.setBackground(xAxisColorPointCloudViewer);
+        yAxisColorLabelPointCloud.setBackground(yAxisColorPointCloudViewer);
+        zAxisColorLabelPointCloud.setBackground(zAxisColorPointCloudViewer);
+        xyGridColorLabelPointCloud.setBackground(gridColorPointCloudViewer);
+        verticesColorPointCloudColorLabel.setBackground(pointColorPointCloudViewer);
     }
     
     /** Creates new form Find */
@@ -55,6 +73,10 @@ public class ViewSettings extends javax.swing.JFrame {
         this.yAxisCheckBox.setSelected(LAMS.yAxisEnableObjViewer);
         this.zAxisCheckBox.setSelected(LAMS.zAxisEnableObjViewer);
         this.xyGridCheckBox.setSelected(LAMS.xyGridEnableObjViewer);
+        this.xAxisCheckBoxPointCloud.setSelected(LAMS.xAxisEnablePointCloudViewer);
+        this.yAxisCheckBoxPointCloud.setSelected(LAMS.yAxisEnablePointCloudViewer);
+        this.zAxisCheckBoxPointCloud.setSelected(LAMS.zAxisEnablePointCloudViewer);
+        this.xyGridCheckBoxPointCloud.setSelected(LAMS.xyGridEnablePointCloudViewer);
     }
     
     /** This method is called from within the constructor to
@@ -76,6 +98,20 @@ public class ViewSettings extends javax.swing.JFrame {
         xyGridColorLabel = new javax.swing.JLabel();
         backgroundColorLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        xAxisCheckBoxPointCloud = new javax.swing.JCheckBox();
+        yAxisCheckBoxPointCloud = new javax.swing.JCheckBox();
+        zAxisCheckBoxPointCloud = new javax.swing.JCheckBox();
+        xyGridCheckBoxPointCloud = new javax.swing.JCheckBox();
+        xAxisColorLabelPointCloud = new javax.swing.JLabel();
+        yAxisColorLabelPointCloud = new javax.swing.JLabel();
+        zAxisColorLabelPointCloud = new javax.swing.JLabel();
+        xyGridColorLabelPointCloud = new javax.swing.JLabel();
+        verticesColorPointCloudColorLabel = new javax.swing.JLabel();
+        backgroundColorLabelPointCloud = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("View Settings");
@@ -108,7 +144,7 @@ public class ViewSettings extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Object Viewer Orientation Guids");
+        jLabel2.setText("Object Viewer Orientation Guides");
 
         xAxisColorLabel.setBackground(new java.awt.Color(255, 255, 255));
         xAxisColorLabel.setOpaque(true);
@@ -152,6 +188,88 @@ public class ViewSettings extends javax.swing.JFrame {
 
         jLabel1.setText("Background");
 
+        jLabel3.setText("Point Cloud View Settings ");
+
+        jLabel4.setText("Background");
+
+        xAxisCheckBoxPointCloud.setText("Show X Axis");
+        xAxisCheckBoxPointCloud.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xAxisCheckBoxPointCloudActionPerformed(evt);
+            }
+        });
+
+        yAxisCheckBoxPointCloud.setText("Show Y Axis");
+        yAxisCheckBoxPointCloud.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yAxisCheckBoxPointCloudActionPerformed(evt);
+            }
+        });
+
+        zAxisCheckBoxPointCloud.setText("Show Z Axis");
+        zAxisCheckBoxPointCloud.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zAxisCheckBoxPointCloudActionPerformed(evt);
+            }
+        });
+
+        xyGridCheckBoxPointCloud.setText("Show XY Grid");
+        xyGridCheckBoxPointCloud.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xyGridCheckBoxPointCloudActionPerformed(evt);
+            }
+        });
+
+        xAxisColorLabelPointCloud.setBackground(new java.awt.Color(255, 255, 255));
+        xAxisColorLabelPointCloud.setOpaque(true);
+        xAxisColorLabelPointCloud.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                xAxisColorLabelPointCloudMouseClicked(evt);
+            }
+        });
+
+        yAxisColorLabelPointCloud.setBackground(new java.awt.Color(255, 255, 255));
+        yAxisColorLabelPointCloud.setOpaque(true);
+        yAxisColorLabelPointCloud.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                yAxisColorLabelPointCloudMouseClicked(evt);
+            }
+        });
+
+        zAxisColorLabelPointCloud.setBackground(new java.awt.Color(255, 255, 255));
+        zAxisColorLabelPointCloud.setOpaque(true);
+        zAxisColorLabelPointCloud.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                zAxisColorLabelPointCloudMouseClicked(evt);
+            }
+        });
+
+        xyGridColorLabelPointCloud.setBackground(new java.awt.Color(255, 255, 255));
+        xyGridColorLabelPointCloud.setOpaque(true);
+        xyGridColorLabelPointCloud.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                xyGridColorLabelPointCloudMouseClicked(evt);
+            }
+        });
+
+        verticesColorPointCloudColorLabel.setBackground(new java.awt.Color(255, 255, 255));
+        verticesColorPointCloudColorLabel.setOpaque(true);
+        verticesColorPointCloudColorLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                verticesColorPointCloudColorLabelMouseClicked(evt);
+            }
+        });
+
+        backgroundColorLabelPointCloud.setBackground(new java.awt.Color(255, 255, 255));
+        backgroundColorLabelPointCloud.setOpaque(true);
+        backgroundColorLabelPointCloud.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backgroundColorLabelPointCloudMouseClicked(evt);
+            }
+        });
+
+        jLabel9.setText("PointCloud Vertices");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -164,10 +282,6 @@ public class ViewSettings extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(xyGridCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(xyGridColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(zAxisCheckBox)
@@ -184,8 +298,34 @@ public class ViewSettings extends javax.swing.JFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(backgroundColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(271, Short.MAX_VALUE))
+                                    .addComponent(backgroundColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(xyGridCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(xyGridColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(zAxisCheckBoxPointCloud)
+                            .addComponent(xyGridCheckBoxPointCloud)
+                            .addComponent(yAxisCheckBoxPointCloud)
+                            .addComponent(jLabel4)
+                            .addComponent(xAxisCheckBoxPointCloud)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(yAxisColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(xAxisColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(verticesColorPointCloudColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(xyGridColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(zAxisColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(backgroundColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,26 +333,56 @@ public class ViewSettings extends javax.swing.JFrame {
                 .addGap(9, 9, 9)
                 .addComponent(jLabel2)
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(backgroundColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backgroundColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(xAxisCheckBox)
                     .addComponent(xAxisColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(yAxisCheckBox)
                     .addComponent(yAxisColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(zAxisCheckBox)
                     .addComponent(zAxisColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(xyGridCheckBox)
                     .addComponent(xyGridColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(269, 269, 269))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(backgroundColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(xAxisCheckBoxPointCloud)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(yAxisCheckBoxPointCloud)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(zAxisCheckBoxPointCloud)
+                            .addComponent(zAxisColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(xyGridColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(xyGridCheckBoxPointCloud)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(verticesColorPointCloudColorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(xAxisColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(yAxisColorLabelPointCloud, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(56, 56, 56))
         );
 
         pack();
@@ -271,6 +441,66 @@ public class ViewSettings extends javax.swing.JFrame {
     private void xyGridCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xyGridCheckBoxActionPerformed
         LAMS.xyGridEnableObjViewer = xyGridCheckBox.isSelected();
     }//GEN-LAST:event_xyGridCheckBoxActionPerformed
+
+    private void backgroundColorLabelPointCloudMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backgroundColorLabelPointCloudMouseClicked
+        this.backgroundColorPointCloudViewer = JColorChooser.showDialog(this, "Point Cloud Background Color Chooser", this.backgroundColorPointCloudViewer);
+        LAMS.backgroundColorPointCloudViewer = this.backgroundColorPointCloudViewer;
+        this.setLabelColors();
+    }//GEN-LAST:event_backgroundColorLabelPointCloudMouseClicked
+
+    private void verticesColorPointCloudColorLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verticesColorPointCloudColorLabelMouseClicked
+        this.pointColorPointCloudViewer = JColorChooser.showDialog(this, "Point Cloud Color Chooser", this.pointColorPointCloudViewer);
+        LAMS.pointColorPointCloudViewer = this.pointColorPointCloudViewer;
+        this.setLabelColors();
+    }//GEN-LAST:event_verticesColorPointCloudColorLabelMouseClicked
+
+    private void xAxisColorLabelPointCloudMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_xAxisColorLabelPointCloudMouseClicked
+        this.xAxisColorPointCloudViewer = JColorChooser.showDialog(this, "Choose X Axis Color", this.xAxisColorPointCloudViewer);
+        LAMS.xAxisColorPointCloudViewer = this.xAxisColorPointCloudViewer;
+        this.setLabelColors();
+        this.xAxisCheckBoxPointCloud.setSelected(true);
+        LAMS.xAxisEnablePointCloudViewer = true;
+    }//GEN-LAST:event_xAxisColorLabelPointCloudMouseClicked
+
+    private void yAxisColorLabelPointCloudMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yAxisColorLabelPointCloudMouseClicked
+        this.yAxisColorPointCloudViewer = JColorChooser.showDialog(this, "Choose Y Axis Color", this.yAxisColorPointCloudViewer);
+        LAMS.yAxisColorPointCloudViewer = this.yAxisColorPointCloudViewer;
+        this.setLabelColors();
+        this.yAxisCheckBoxPointCloud.setSelected(true);
+        LAMS.yAxisEnablePointCloudViewer = true;
+    }//GEN-LAST:event_yAxisColorLabelPointCloudMouseClicked
+
+    private void zAxisColorLabelPointCloudMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zAxisColorLabelPointCloudMouseClicked
+        this.zAxisColorPointCloudViewer = JColorChooser.showDialog(this, "Choose Z Axis Color", this.zAxisColorPointCloudViewer);
+        LAMS.zAxisColorPointCloudViewer = this.zAxisColorPointCloudViewer;
+        this.setLabelColors();
+        this.zAxisCheckBoxPointCloud.setSelected(true);
+        LAMS.zAxisEnablePointCloudViewer = true;
+    }//GEN-LAST:event_zAxisColorLabelPointCloudMouseClicked
+
+    private void xyGridColorLabelPointCloudMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_xyGridColorLabelPointCloudMouseClicked
+        this.gridColorPointCloudViewer = JColorChooser.showDialog(this, "Choose XY Grid Color", this.gridColorPointCloudViewer);
+        LAMS.xyGridColorPointCloudViewer = this.gridColorPointCloudViewer;
+        this.setLabelColors();
+        this.xyGridCheckBoxPointCloud.setSelected(true);
+        LAMS.xyGridEnablePointCloudViewer = true;
+    }//GEN-LAST:event_xyGridColorLabelPointCloudMouseClicked
+
+    private void xAxisCheckBoxPointCloudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xAxisCheckBoxPointCloudActionPerformed
+        LAMS.xAxisEnablePointCloudViewer = this.xAxisCheckBoxPointCloud.isSelected();
+    }//GEN-LAST:event_xAxisCheckBoxPointCloudActionPerformed
+
+    private void yAxisCheckBoxPointCloudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yAxisCheckBoxPointCloudActionPerformed
+        LAMS.yAxisEnablePointCloudViewer = this.yAxisCheckBoxPointCloud.isSelected();
+    }//GEN-LAST:event_yAxisCheckBoxPointCloudActionPerformed
+
+    private void zAxisCheckBoxPointCloudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zAxisCheckBoxPointCloudActionPerformed
+        LAMS.zAxisEnablePointCloudViewer = this.zAxisCheckBoxPointCloud.isSelected();
+    }//GEN-LAST:event_zAxisCheckBoxPointCloudActionPerformed
+
+    private void xyGridCheckBoxPointCloudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xyGridCheckBoxPointCloudActionPerformed
+        LAMS.xyGridEnablePointCloudViewer = this.xyGridCheckBoxPointCloud.isSelected();
+    }//GEN-LAST:event_xyGridCheckBoxPointCloudActionPerformed
     
     /**
      * @param args the command line arguments
@@ -311,21 +541,41 @@ public class ViewSettings extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backgroundColorLabel;
+    private javax.swing.JLabel backgroundColorLabelPointCloud;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel verticesColorPointCloudColorLabel;
     private javax.swing.JCheckBox xAxisCheckBox;
+    private javax.swing.JCheckBox xAxisCheckBoxPointCloud;
     private javax.swing.JLabel xAxisColorLabel;
+    private javax.swing.JLabel xAxisColorLabelPointCloud;
     private javax.swing.JCheckBox xyGridCheckBox;
+    private javax.swing.JCheckBox xyGridCheckBoxPointCloud;
     private javax.swing.JLabel xyGridColorLabel;
+    private javax.swing.JLabel xyGridColorLabelPointCloud;
     private javax.swing.JCheckBox yAxisCheckBox;
+    private javax.swing.JCheckBox yAxisCheckBoxPointCloud;
     private javax.swing.JLabel yAxisColorLabel;
+    private javax.swing.JLabel yAxisColorLabelPointCloud;
     private javax.swing.JCheckBox zAxisCheckBox;
+    private javax.swing.JCheckBox zAxisCheckBoxPointCloud;
     private javax.swing.JLabel zAxisColorLabel;
+    private javax.swing.JLabel zAxisColorLabelPointCloud;
     // End of variables declaration//GEN-END:variables
     private Color xAxisColorObjViewer= Color.WHITE;
     private Color yAxisColorObjViewer= Color.WHITE;
     private Color zAxisColorObjViewer= Color.WHITE;
     private Color gridColorObjViewer= Color.WHITE;
     private Color backgroundColorObjViewer= Color.WHITE;
+    private Color xAxisColorPointCloudViewer= Color.WHITE;
+    private Color yAxisColorPointCloudViewer= Color.WHITE;
+    private Color zAxisColorPointCloudViewer= Color.WHITE;
+    private Color gridColorPointCloudViewer= Color.WHITE;
+    private Color pointColorPointCloudViewer= Color.WHITE;
+    private Color backgroundColorPointCloudViewer= Color.WHITE;
     private JColorChooser jcc= new JColorChooser();
 }
