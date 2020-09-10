@@ -76,38 +76,45 @@
                                   <Component id="backgroundColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="xyGridCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="xyGridColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="spineCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="spineColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="xyGridCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="xyGridColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="zAxisCheckBoxPointCloud" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="xyGridCheckBoxPointCloud" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="yAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="xAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="yAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
-                          <Component id="xAxisColorLabelPointCloud" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
-                          <Component id="verticesColorPointCloudColorLabel" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
-                          <Component id="xyGridColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
-                          <Component id="zAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
-                          <Component id="backgroundColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jSeparator1" alignment="0" min="-2" pref="480" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="zAxisCheckBoxPointCloud" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="xyGridCheckBoxPointCloud" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="yAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="xAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="yAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                                  <Component id="xAxisColorLabelPointCloud" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
+                                  <Component id="verticesColorPointCloudColorLabel" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
+                                  <Component id="xyGridColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                                  <Component id="zAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                                  <Component id="backgroundColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jSeparator1" min="-2" pref="480" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -145,7 +152,12 @@
                   <Component id="xyGridCheckBox" min="-2" max="-2" attributes="0"/>
                   <Component id="xyGridColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="spineCheckBox" min="-2" max="-2" attributes="0"/>
+                  <Component id="spineColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="26" max="32767" attributes="0"/>
               <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
@@ -155,33 +167,35 @@
                   <Component id="backgroundColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="xAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="yAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="zAxisCheckBoxPointCloud" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="zAxisColorLabelPointCloud" alignment="0" min="-2" pref="15" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="xAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="yAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="zAxisCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="verticesColorPointCloudColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="xAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="yAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="zAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="xyGridColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
-                          <Component id="xyGridCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="xyGridCheckBoxPointCloud" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="verticesColorPointCloudColorLabel" min="-2" pref="15" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="xAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="yAxisColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="xyGridColorLabelPointCloud" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -398,6 +412,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="PointCloud Vertices"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="spineCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Show Spine"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="spineCheckBoxActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="spineColorLabel">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="opaque" type="boolean" value="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="spineColorLabelMouseClicked"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

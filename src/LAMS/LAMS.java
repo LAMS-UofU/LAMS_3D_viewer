@@ -32,6 +32,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -79,10 +81,13 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     static Color yAxisColorObjViewer = Color.BLUE;
     static Color zAxisColorObjViewer = Color.RED;
     static Color xyGridColorObjViewer = Color.LIGHT_GRAY;
+    static Color spineColorObjViewer = Color.ORANGE;
     static boolean xAxisEnableObjViewer = false;
     static boolean yAxisEnableObjViewer = false;
     static boolean zAxisEnableObjViewer = true;
     static boolean xyGridEnableObjViewer = true;
+    static boolean spineEnableObjViewer = false;
+    
     
     static Color backgroundColorPointCloudViewer = Color.BLACK;
     static Color pointColorPointCloudViewer = Color.RED;
@@ -94,6 +99,8 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     static boolean yAxisEnablePointCloudViewer = false;
     static boolean zAxisEnablePointCloudViewer = true;
     static boolean xyGridEnablePointCloudViewer = false;
+    static boolean objectInteriorView = false;
+    static Obj3D focusedObject;
     
     public static void main(String[] args){
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -120,6 +127,8 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         JMenuItem exportObj = new JMenuItem("Export .obj file");
         JMenuItem editObjects = new JMenuItem("Objects");
         JMenuItem viewSettings = new JMenuItem("Settings");
+        JMenuItem viewToggleInteriorView = new JMenuItem("Toggle Interior View");
+        JMenuItem helpTest = new JMenuItem("test");
         importLam.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -197,6 +206,28 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                 fileChooser.removeChoosableFileFilter(objFileFilter);
             }
         });
+        viewToggleInteriorView.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(LAMS.objectInteriorView){
+                    LAMS.objectInteriorView = false;
+                    //LAMS.spineEnableObjViewer = false;
+                    
+                }
+                else{
+                    LAMS.objectInteriorView = true;
+                    //LAMS.spineEnableObjViewer = true;
+                }
+            }
+            
+        });
+        helpTest.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                System.out.println(transX + transY + transZ);
+            }
+            
+        });
         viewSettings.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -205,6 +236,7 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                         LAMS.yAxisColorObjViewer.getRed() + "," + LAMS.yAxisColorObjViewer.getGreen() + "," + LAMS.yAxisColorObjViewer.getBlue() + ':' +
                         LAMS.zAxisColorObjViewer.getRed() + "," + LAMS.zAxisColorObjViewer.getGreen() + "," + LAMS.zAxisColorObjViewer.getBlue() + ':' +
                         LAMS.xyGridColorObjViewer.getRed() + "," + LAMS.xyGridColorObjViewer.getGreen() + "," + LAMS.xyGridColorObjViewer.getBlue() + ':' +
+                        LAMS.spineColorObjViewer.getRed() + "," + LAMS.spineColorObjViewer.getGreen() + "," + LAMS.spineColorObjViewer.getBlue() + ':' +
                         LAMS.backgroundColorPointCloudViewer.getRed() + "," + LAMS.backgroundColorPointCloudViewer.getGreen() + "," + LAMS.backgroundColorPointCloudViewer.getBlue() + ':' +
                         LAMS.pointColorPointCloudViewer.getRed() + "," + LAMS.pointColorPointCloudViewer.getGreen() + "," + LAMS.pointColorPointCloudViewer.getBlue() + ':' +
                         LAMS.xAxisColorPointCloudViewer.getRed() + "," + LAMS.xAxisColorPointCloudViewer.getGreen() + "," + LAMS.xAxisColorPointCloudViewer.getBlue() + ':' +
@@ -231,7 +263,9 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         fileMenu.add(importObj);
         fileMenu.add(exportObj);
         editMenu.add(editObjects);
+        viewMenu.add(viewToggleInteriorView);
         viewMenu.add(viewSettings);
+        helpMenu.add(helpTest);
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
         menuBar.add(viewMenu);
@@ -304,16 +338,43 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         gl.glLoadIdentity();
         float widthHeightRatio = (float) this.width / (float)this.height;
         glu.gluPerspective(45, widthHeightRatio, 1, 10000);
-        glu.gluLookAt(0, 0, this.distance, 0, 0, 0, 0, 1, 0);
+        if(LAMS.objectInteriorView){
+            if(LAMS.focusedObject!=null){
+                glu.gluLookAt(LAMS.focusedObject.center.x,(LAMS.focusedObject.center.z-LAMS.focusedObject.minZ.z),LAMS.focusedObject.maxY.y-15,LAMS.focusedObject.center.x,LAMS.focusedObject.center.z-LAMS.focusedObject.minZ.z,LAMS.focusedObject.maxY.y, 0, 0.5, 0.5);
+                gl.glDisable(GL2.GL_CULL_FACE);
+                gl.glEnable( GL2.GL_LIGHT2 );  
+                gl.glLightfv(GL2.GL_LIGHT2, GL2.GL_POSITION, new float[]{LAMS.focusedObject.center.x,LAMS.focusedObject.maxY.y,LAMS.focusedObject.maxZ.z-LAMS.focusedObject.minZ.z,1.0f}, 0);
+                //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, new float[]{-posX,-posY,posZ,1.0f}, 0);
+                gl.glLightfv(GL2.GL_LIGHT2, GL2.GL_SPECULAR, new float[]{1f, 1f, 1f, 0.5f}, 0);
+                gl.glLightfv(GL2.GL_LIGHT2, GL2.GL_EMISSION, new float[]{1f, 1f, 1f, 0.5f}, 0);
+                gl.glLightfv(GL2.GL_LIGHT2, GL2.GL_AMBIENT, new float[]{0.5f, 0.5f, 0.5f, 0.5f}, 0);
+                gl.glLightfv(GL2.GL_LIGHT2, GL2.GL_DIFFUSE, new float[]{1f, 1f, 1f, 0.5f}, 0);
+                //gl.glCullFace(GL2.GL_FRONT);
+            }
+            else{
+                glu.gluLookAt(0, 0, this.distance, 0, 0, 0, 0, 1, 0);
+                gl.glEnable(GL2.GL_CULL_FACE);
+            }
+        }
+        else{
+            glu.gluLookAt(0, 0, this.distance, 0, 0, 0, 0, 1, 0);
+            gl.glEnable(GL2.GL_CULL_FACE);
+        }
+        
+        //glu.gluLookAt(0, 0, this.distance, 0, 0, 0, 0, 1, 0);
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glLoadIdentity();
         
         gl.glPushMatrix();
+        if(!LAMS.objectInteriorView){
+            gl.glTranslatef(this.transX,-this.transY,this.transZ);
+        }
+        
         gl.glRotatef(rotx, 1.0f, 0.0f, 0.0f);
         gl.glRotatef(-roty, 0.0f, 1.0f, 0.0f);
         gl.glRotatef(rotz, 0.0f, 0.0f, 1.0f);
         
-        gl.glTranslatef(-this.transX,this.transY,this.transZ);
+        //gl.glTranslatef(-this.transX,this.transY,this.transZ);
         
         posX+=transX;
         posY+=transY;
@@ -327,7 +388,7 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         }
         else{
             gl.glDisable(GL2.GL_LIGHTING);
-            createGrid(drawable.getGL().getGL2(), 100,50);
+            createGrid(drawable.getGL().getGL2(), 50,25);
             /*gl.glEnable( GL2.GL_LIGHTING );  
             gl.glEnable( GL2.GL_LIGHT0 );  
             gl.glEnable( GL2.GL_NORMALIZE );
@@ -355,14 +416,8 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
             gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT, new float[]{0.5f, 0.5f, 0.5f, 0.5f}, 0);
             gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_DIFFUSE, new float[]{1f, 1f, 1f, 0.5f}, 0);
             
-           
-            gl.glEnable( GL2.GL_LIGHTING ); 
-            /*float pos[] = { 50.0f, 50.0f, 100.0f, 0.0f };
-            //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, pos, 0);
-            gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, new float[]{-posX,-posY,posZ,0.0f}, 0);
-            gl.glEnable(GL2.GL_CULL_FACE);
-            float red[] = { 0.8f, 0.1f, 0.0f, 1.0f };
-            gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, red, 0);*/
+            
+            /**/
             this.displayObjects(gl);
         }
         gl.glPopMatrix();
@@ -397,42 +452,83 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
 //    }
     
     public void displayObjects(GL2 gl){
+        
+        
         for(Obj3D ob:LAMS.objects){
+            float offset = ob.minZ.z*-1;
+            
+            /*if(LAMS.objectInteriorView){
+                gl.glDisable(GL2.GL_CULL_FACE);
+            }
+            else{
+                gl.glEnable(GL2.GL_CULL_FACE);
+            }*/
+            gl.glEnable(GL2.GL_LIGHTING);
             CartesianCoordinate cc;
             CartesianVector cv;
             gl.glColor3f(1,1,1);
             
             for(Face f:ob.faces){
+                
                 if(f.isTriangle){
+                    //gl.glCullFace(GL2.GL_FRONT);
                     gl.glBegin(GL2.GL_TRIANGLES);
                     cv = f.faceNormal;
                     gl.glNormal3f(cv.x,cv.y,cv.z);
+                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
                     cc = f.v1.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z);
+                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
                     gl.glNormal3f(cv.x,cv.y,cv.z);
+                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
                     cc = f.v2.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z);
+                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
                     gl.glNormal3f(cv.x,cv.y,cv.z);
+                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
                     cc = f.v3.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z);
+                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
                     gl.glEnd();
+                    //gl.glCullFace(GL2.GL_BACK);
                 }
                 else{
+                    //gl.glCullFace(GL2.GL_FRONT);
                     gl.glBegin(GL2.GL_QUADS);
                     cv = f.faceNormal;
                     gl.glNormal3f(cv.x,cv.y,cv.z);
+                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
                     cc = f.v1.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z);
+                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
                     gl.glNormal3f(cv.x,cv.y,cv.z);
+                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
                     cc = f.v2.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z);
+                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
                     gl.glNormal3f(cv.x,cv.y,cv.z);
+                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
                     cc = f.v3.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z);
+                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
                     gl.glNormal3f(cv.x,cv.y,cv.z);
+                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
                     cc = f.v4.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z);
+                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
                     gl.glEnd();
+                    //gl.glCullFace(GL2.GL_BACK);
+                }
+            }
+            gl.glDisable(GL2.GL_LIGHTING);
+            gl.glEnable(GL2.GL_CULL_FACE);
+            if(LAMS.spineEnableObjViewer){
+                for(int i = 0;i<ob.spine.size();i++){
+                    gl.glColor3f(LAMS.spineColorObjViewer.getRed()/255.0f,LAMS.spineColorObjViewer.getGreen()/255.0f,LAMS.spineColorObjViewer.getBlue()/255.0f);
+                    gl.glPointSize(10);
+                    gl.glBegin(GL2.GL_POINTS);
+                    gl.glVertex3f(ob.spine.get(i).x, ob.spine.get(i).y, ob.spine.get(i).z+offset);
+                    gl.glEnd();
+                    if(ob.spine.size()>1 && i>0){
+                        gl.glBegin(GL2.GL_LINES);
+                            gl.glVertex3f(ob.spine.get(i).x, ob.spine.get(i).y, ob.spine.get(i).z+offset);
+                            gl.glVertex3f(ob.spine.get(i-1).x, ob.spine.get(i-1).y, ob.spine.get(i-1).z+offset);
+                        gl.glEnd();
+                    }
+                    
                 }
             }
         }
@@ -603,10 +699,20 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     public void keyPressed(KeyEvent ke) {
         switch(ke.getKeyCode()){
                 case 40:
-                    this.transZ -=1;
+                    if(LAMS.objectInteriorView){
+                        this.rotx -=1;
+                    }
+                    else{
+                        this.transZ -=1;
+                    }
                     break;
                 case 38:
-                    this.transZ +=1;
+                    if(LAMS.objectInteriorView){
+                        this.rotx +=1;
+                    }
+                    else{
+                        this.transZ +=1;
+                    }
                     break;
                 case 39:
                     this.rotz +=1;
@@ -616,9 +722,14 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                     break;
                 case 81:
                     this.distance+=1;
+                    //this.transY+=1;
                     break;
                 case 87:
                     this.distance-=1;
+                    //this.transY-=1;
+                    break;
+                case 27:
+                    System.out.println("esc");
                     break;
                     
         }
@@ -643,6 +754,7 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     public void importObjFile(File objFile){
         try {
             Obj3D obj = new Obj3D();
+            Map<Float,ArrayList<CartesianCoordinate>> xSlices = new HashMap<Float,ArrayList<CartesianCoordinate>>();
             String str;
             String [] temp;
             Scanner s = new Scanner(objFile);
@@ -654,8 +766,38 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                     str = str.replace("  ", " ");
                     temp = str.split(" ");
                     if(temp[0].equals("v")){
-                        //float f1= new Float(temp[1]);
-                        obj.addVertex(new Float(temp[1]), new Float(temp[2]), new Float(temp[3]));
+                        CartesianCoordinate vertexCC = new CartesianCoordinate(new Float(temp[1]), new Float(temp[2]), new Float(temp[3]));
+                        Float xSliceRef = new Float(Math.floor(new Float(vertexCC.x).doubleValue() * 10) / 10);
+                        ArrayList<CartesianCoordinate> xSlicesVal;
+                        if(xSlices.containsKey(xSliceRef)){
+                            xSlicesVal = xSlices.get(xSliceRef);
+                            xSlicesVal.add(vertexCC);
+                            xSlices.put(xSliceRef, xSlicesVal);
+                        }
+                        else{
+                            xSlicesVal = new ArrayList<CartesianCoordinate>();
+                            xSlicesVal.add(vertexCC);
+                            xSlices.put(xSliceRef, xSlicesVal);
+                        }
+                        if(vertexCC.x>obj.maxX.x){
+                            obj.maxX = vertexCC;
+                        }
+                        else if(vertexCC.x<obj.minX.x){
+                            obj.minX = vertexCC;
+                        }
+                        else if(vertexCC.y>obj.maxY.y){
+                            obj.maxY = vertexCC;
+                        }
+                        else if(vertexCC.y<obj.minY.y){
+                            obj.minY = vertexCC;
+                        }
+                        else if(vertexCC.z>obj.maxZ.z){
+                            obj.maxZ = vertexCC;
+                        }
+                        else if(vertexCC.z<obj.minZ.z){
+                            obj.minZ = vertexCC;
+                        }
+                        obj.addVertex(vertexCC);
                     }
                     else if(temp[0].equals("vt")){
                         obj.addTexture(new Float(temp[1]), new Float(temp[2]));
@@ -692,8 +834,33 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                     }
                 }
             }
+            obj.center = new CartesianCoordinate(obj.minX.x+(obj.maxX.x-obj.minX.x)/2, obj.minY.y+(obj.maxY.y-obj.minY.y)/2, obj.minZ.x+(obj.maxZ.z-obj.minZ.z)/2);
             s.close();
+            for(Float f:xSlices.keySet()){
+                ArrayList<CartesianCoordinate> slice = xSlices.get(f);
+                float maxY = slice.get(0).y;
+                float minY = slice.get(0).y;
+                float maxZ = slice.get(0).z;
+                float minZ = slice.get(0).z;
+                for(CartesianCoordinate xSlicesCC:slice){
+                    if(xSlicesCC.y>maxY){
+                        maxY=xSlicesCC.y;
+                    }
+                    else if(xSlicesCC.y<minY){
+                        minY=xSlicesCC.y;
+                    }
+                    if(xSlicesCC.z > maxZ){
+                        maxZ = xSlicesCC.z;
+                    }
+                    else if(xSlicesCC.z < minZ){
+                        minZ = xSlicesCC.z;
+                    }
+                }
+                CartesianCoordinate tempSpineCC = new CartesianCoordinate(f,minY+(maxY-minY)/2,minZ+(maxZ-minZ)/2);
+                obj.spine.add(tempSpineCC);
+            }
             LAMS.objects.add(obj);
+            LAMS.focusedObject = obj;
         } catch (FileNotFoundException ex) {
             System.out.println(ex.getMessage());
         }

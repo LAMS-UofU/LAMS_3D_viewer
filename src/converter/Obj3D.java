@@ -18,18 +18,30 @@ public class Obj3D {
     public ArrayList<Face> faces;
     public ArrayList<CartesianVector> normals;
     public ArrayList<CartesianCoordinate> textures;
+    public ArrayList<CartesianCoordinate> spine;
+    public CartesianCoordinate center;
+    public CartesianCoordinate maxX=new CartesianCoordinate(0.0f,0.0f,0.0f);
+    public CartesianCoordinate minX=new CartesianCoordinate(0.0f,0.0f,0.0f);
+    public CartesianCoordinate minY=new CartesianCoordinate(0.0f,0.0f,0.0f);
+    public CartesianCoordinate maxY=new CartesianCoordinate(0.0f,0.0f,0.0f);
+    public CartesianCoordinate maxZ=new CartesianCoordinate(0.0f,0.0f,0.0f);
+    public CartesianCoordinate minZ=new CartesianCoordinate(0.0f,0.0f,0.0f);
     
     public Obj3D(){
         vertices = new ArrayList<CartesianCoordinate>();
         faces = new ArrayList<Face>();
         normals = new ArrayList<CartesianVector>();
         textures = new ArrayList<CartesianCoordinate>();
+        spine = new ArrayList<CartesianCoordinate>();
         
     }
     
     public Obj3D(ArrayList<CartesianCoordinate> vertices, ArrayList<Face> faces){
         this.vertices = vertices;
         this.faces = faces;
+        normals = new ArrayList<CartesianVector>();
+        textures = new ArrayList<CartesianCoordinate>();
+        spine = new ArrayList<CartesianCoordinate>();
     }
     
     public Obj3D(ArrayList<CartesianCoordinate> vertices, ArrayList<CartesianCoordinate> textures, ArrayList<CartesianVector> normals, ArrayList<Face> faces){
@@ -37,10 +49,15 @@ public class Obj3D {
         this.textures = textures;
         this.normals = normals;
         this.faces = faces;
+        spine = new ArrayList<CartesianCoordinate>();
     }
     
     public void addVertex(float x, float y, float z){
         vertices.add(new CartesianCoordinate(x,y,z));
+    }
+    
+    public void addVertex(CartesianCoordinate cc){
+        vertices.add(cc);
     }
     
     public void addTexture(float x, float y){
