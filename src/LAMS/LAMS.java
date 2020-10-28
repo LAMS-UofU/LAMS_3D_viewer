@@ -14,6 +14,7 @@ import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.Animator;
 import converter.CartesianCoordinate;
 import converter.CartesianVector;
+import converter.Edge;
 import converter.Face;
 import converter.FaceVertex;
 import converter.LamToObjConverter;
@@ -87,6 +88,9 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     static boolean zAxisEnableObjViewer = true;
     static boolean xyGridEnableObjViewer = true;
     static boolean spineEnableObjViewer = false;
+    static boolean vertexViewEnable = false;
+    static boolean wireframeViewEnable = false;
+    static boolean solidViewEnable = true;
     
     
     static Color backgroundColorPointCloudViewer = Color.BLACK;
@@ -128,6 +132,9 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         JMenuItem editObjects = new JMenuItem("Objects");
         JMenuItem viewSettings = new JMenuItem("Settings");
         JMenuItem viewToggleInteriorView = new JMenuItem("Toggle Interior View");
+        JMenuItem wireframeView = new JMenuItem("Wireframe View");
+        JMenuItem vertexView = new JMenuItem("Vertex View");
+        JMenuItem solidView = new JMenuItem("Solid View");
         JMenuItem helpTest = new JMenuItem("test");
         importLam.addActionListener(new ActionListener(){
             @Override
@@ -252,6 +259,13 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                 });
             }
         });
+        vertexView.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+            
+        });
         LAMS.canvas = new GLCanvas();
 
         fileMenu.add(open);
@@ -265,10 +279,14 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         editMenu.add(editObjects);
         viewMenu.add(viewToggleInteriorView);
         viewMenu.add(viewSettings);
+        viewMenu.addSeparator();
+        viewMenu.add(vertexView);
+        viewMenu.add(wireframeView);
+        viewMenu.add(solidView);
         helpMenu.add(helpTest);
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
-        menuBar.add(viewMenu);
+        menuBar.add(viewMenu);  
         menuBar.add(helpMenu);
         canvas.addGLEventListener(new LAMS());
         frame.setJMenuBar(menuBar);
@@ -464,10 +482,18 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                 gl.glEnable(GL2.GL_CULL_FACE);
             }*/
             gl.glEnable(GL2.GL_LIGHTING);
+            //gl.glDisable(GL2.GL_LIGHTING);
             CartesianCoordinate cc;
             CartesianVector cv;
             gl.glColor3f(1,1,1);
-            
+            for(Edge e:ob.edges){
+                gl.glBegin(GL2.GL_LINES);
+                    cc = ob.vertices.get(e.a);
+                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                    cc = ob.vertices.get(e.b);
+                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                gl.glEnd();
+            }
             for(Face f:ob.faces){
                 
                 if(f.isTriangle){
@@ -804,6 +830,9 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                     }
                     else if(temp[0].equals("vn")){
                         obj.addNormalVertex(new Float(temp[1]), new Float(temp[2]), new Float(temp[3]));  
+                    }
+                    else if(temp[0].equals("e")){
+                        obj.addEdge(new Edge(Integer.parseInt(temp[1]),Integer.parseInt(temp[2])));
                     }
                     else if(temp[0].equals("f")){
                         ArrayList<FaceVertex> fv = new ArrayList<FaceVertex>();

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Obj3D {
     public ArrayList<CartesianCoordinate> vertices;
     public ArrayList<Face> faces;
+    public ArrayList<Edge> edges;
     public ArrayList<CartesianVector> normals;
     public ArrayList<CartesianCoordinate> textures;
     public ArrayList<CartesianCoordinate> spine;
@@ -30,6 +31,7 @@ public class Obj3D {
     public Obj3D(){
         vertices = new ArrayList<CartesianCoordinate>();
         faces = new ArrayList<Face>();
+        edges = new ArrayList<Edge>();
         normals = new ArrayList<CartesianVector>();
         textures = new ArrayList<CartesianCoordinate>();
         spine = new ArrayList<CartesianCoordinate>();
@@ -39,16 +41,18 @@ public class Obj3D {
     public Obj3D(ArrayList<CartesianCoordinate> vertices, ArrayList<Face> faces){
         this.vertices = vertices;
         this.faces = faces;
+        edges = new ArrayList<Edge>();
         normals = new ArrayList<CartesianVector>();
         textures = new ArrayList<CartesianCoordinate>();
         spine = new ArrayList<CartesianCoordinate>();
     }
     
-    public Obj3D(ArrayList<CartesianCoordinate> vertices, ArrayList<CartesianCoordinate> textures, ArrayList<CartesianVector> normals, ArrayList<Face> faces){
+    public Obj3D(ArrayList<CartesianCoordinate> vertices, ArrayList<CartesianCoordinate> textures, ArrayList<CartesianVector> normals, ArrayList<Face> faces, ArrayList<Edge> edges){
         this.vertices = vertices;
         this.textures = textures;
         this.normals = normals;
         this.faces = faces;
+        this.edges = edges;
         spine = new ArrayList<CartesianCoordinate>();
     }
     
@@ -76,6 +80,10 @@ public class Obj3D {
     
     public void addFace(Face f){
         faces.add(f);
+    }
+    
+    public void addEdge(Edge e){
+        edges.add(e);
     }
     
     
