@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -131,10 +132,11 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         JMenuItem exportObj = new JMenuItem("Export .obj file");
         JMenuItem editObjects = new JMenuItem("Objects");
         JMenuItem viewSettings = new JMenuItem("Settings");
-        JMenuItem viewToggleInteriorView = new JMenuItem("Toggle Interior View");
-        JMenuItem wireframeView = new JMenuItem("Wireframe View");
-        JMenuItem vertexView = new JMenuItem("Vertex View");
-        JMenuItem solidView = new JMenuItem("Solid View");
+        JCheckBoxMenuItem viewToggleInteriorView = new JCheckBoxMenuItem("Toggle Interior View");
+        JCheckBoxMenuItem wireframeView = new JCheckBoxMenuItem("Wireframe View");
+        JCheckBoxMenuItem vertexView = new JCheckBoxMenuItem("Vertex View");
+        JCheckBoxMenuItem solidView = new JCheckBoxMenuItem("Solid View");
+        solidView.setState(true);
         JMenuItem helpTest = new JMenuItem("test");
         importLam.addActionListener(new ActionListener(){
             @Override
@@ -262,9 +264,67 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         vertexView.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                if(LAMS.vertexViewEnable){
+                    LAMS.vertexViewEnable = false;
+                    vertexView.setState(false);
+                    LAMS.wireframeViewEnable = true;
+                    wireframeView.setState(true);
+                    LAMS.solidViewEnable = false;
+                    solidView.setState(false);
+                }
+                else{
+                    LAMS.vertexViewEnable = true;
+                    vertexView.setState(true);
+                    LAMS.wireframeViewEnable = false;
+                    wireframeView.setState(false);
+                    LAMS.solidViewEnable = false;
+                    solidView.setState(false);
+                }
+                
             }
             
+        });
+        wireframeView.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(LAMS.wireframeViewEnable){
+                    LAMS.vertexViewEnable = false;
+                    vertexView.setState(false);
+                    LAMS.wireframeViewEnable = false;
+                    wireframeView.setState(false);
+                    LAMS.solidViewEnable = true;
+                    solidView.setState(true);
+                }
+                else{
+                    LAMS.vertexViewEnable = false;
+                    vertexView.setState(false);
+                    LAMS.wireframeViewEnable = true;
+                    wireframeView.setState(true);
+                    LAMS.solidViewEnable = false;
+                    solidView.setState(false);
+                }
+            }
+        });
+        solidView.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(LAMS.solidViewEnable){
+                    LAMS.vertexViewEnable = true;
+                    vertexView.setState(true);
+                    LAMS.wireframeViewEnable = false;
+                    wireframeView.setState(false);
+                    LAMS.solidViewEnable = false;
+                    solidView.setState(false);
+                }
+                else{
+                    LAMS.vertexViewEnable = false;
+                    vertexView.setState(false);
+                    LAMS.wireframeViewEnable = false;
+                    wireframeView.setState(false);
+                    LAMS.solidViewEnable = true;
+                    solidView.setState(true);
+                }
+            }
         });
         LAMS.canvas = new GLCanvas();
 
@@ -469,78 +529,97 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
 //        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
     
+    /**
+     * displayObjects will cycle through all objects and display them using all relevant settings.
+     * @param gl - GL2 object. 
+     */
     public void displayObjects(GL2 gl){
-        
-        
+        //cycle through all objects stored in the variable LAMS.objects
         for(Obj3D ob:LAMS.objects){
+            //offset calculates the value needed to add to each vertex to raise the whole object to have a flore at z=0
             float offset = ob.minZ.z*-1;
-            
-            /*if(LAMS.objectInteriorView){
-                gl.glDisable(GL2.GL_CULL_FACE);
-            }
-            else{
-                gl.glEnable(GL2.GL_CULL_FACE);
-            }*/
-            gl.glEnable(GL2.GL_LIGHTING);
-            //gl.glDisable(GL2.GL_LIGHTING);
+            //lighting needs to be disabled for vertex and edges to be displayed correctly.
+            gl.glDisable(GL2.GL_LIGHTING);
             CartesianCoordinate cc;
             CartesianVector cv;
-            gl.glColor3f(1,1,1);
-            for(Edge e:ob.edges){
-                gl.glBegin(GL2.GL_LINES);
-                    cc = ob.vertices.get(e.a);
-                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
-                    cc = ob.vertices.get(e.b);
-                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+            //check which view is enabled and display the objects using that view.
+            if(LAMS.vertexViewEnable){
+                gl.glColor3f(LAMS.pointColorPointCloudViewer.getRed()/255.0f,LAMS.pointColorPointCloudViewer.getGreen()/255.0f,LAMS.pointColorPointCloudViewer.getBlue()/255.0f);
+                gl.glPointSize(10);
+                gl.glBegin(GL2.GL_POINTS);
+                for(CartesianCoordinate tempCC:ob.vertices){
+                    gl.glVertex3f(tempCC.x, tempCC.y, tempCC.z+offset);
+                }
                 gl.glEnd();
             }
-            for(Face f:ob.faces){
-                
-                if(f.isTriangle){
-                    //gl.glCullFace(GL2.GL_FRONT);
-                    gl.glBegin(GL2.GL_TRIANGLES);
-                    cv = f.faceNormal;
-                    gl.glNormal3f(cv.x,cv.y,cv.z);
-                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
-                    cc = f.v1.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
-                    gl.glNormal3f(cv.x,cv.y,cv.z);
-                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
-                    cc = f.v2.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
-                    gl.glNormal3f(cv.x,cv.y,cv.z);
-                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
-                    cc = f.v3.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+            else if(LAMS.wireframeViewEnable){
+                gl.glColor3f(1,1,1);
+                for(Edge e:ob.edges){
+                    gl.glBegin(GL2.GL_LINES);
+                        cc = ob.vertices.get(e.a);
+                        gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                        cc = ob.vertices.get(e.b);
+                        gl.glVertex3f(cc.x,cc.y,cc.z+offset);
                     gl.glEnd();
-                    //gl.glCullFace(GL2.GL_BACK);
+                }
+            }
+            else if(LAMS.solidViewEnable){
+                if(LAMS.objectInteriorView){
+                    gl.glDisable(GL2.GL_CULL_FACE);
                 }
                 else{
-                    //gl.glCullFace(GL2.GL_FRONT);
-                    gl.glBegin(GL2.GL_QUADS);
-                    cv = f.faceNormal;
-                    gl.glNormal3f(cv.x,cv.y,cv.z);
-                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
-                    cc = f.v1.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
-                    gl.glNormal3f(cv.x,cv.y,cv.z);
-                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
-                    cc = f.v2.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
-                    gl.glNormal3f(cv.x,cv.y,cv.z);
-                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
-                    cc = f.v3.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
-                    gl.glNormal3f(cv.x,cv.y,cv.z);
-                    //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
-                    cc = f.v4.vertex;
-                    gl.glVertex3f(cc.x,cc.y,cc.z+offset);
-                    gl.glEnd();
-                    //gl.glCullFace(GL2.GL_BACK);
+                    gl.glEnable(GL2.GL_CULL_FACE);
+                }
+                gl.glEnable(GL2.GL_LIGHTING);
+                for(Face f:ob.faces){
+
+                    if(f.isTriangle){
+                        //gl.glCullFace(GL2.GL_FRONT);
+                        gl.glBegin(GL2.GL_TRIANGLES);
+                        cv = f.faceNormal;
+                        gl.glNormal3f(cv.x,cv.y,cv.z);
+                        //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
+                        cc = f.v1.vertex;
+                        gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                        gl.glNormal3f(cv.x,cv.y,cv.z);
+                        //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
+                        cc = f.v2.vertex;
+                        gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                        gl.glNormal3f(cv.x,cv.y,cv.z);
+                        //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
+                        cc = f.v3.vertex;
+                        gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                        gl.glEnd();
+                        //gl.glCullFace(GL2.GL_BACK);
+                    }
+                    else{
+                        //gl.glCullFace(GL2.GL_FRONT);
+                        gl.glBegin(GL2.GL_QUADS);
+                        cv = f.faceNormal;
+                        gl.glNormal3f(cv.x,cv.y,cv.z);
+                        //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
+                        cc = f.v1.vertex;
+                        gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                        gl.glNormal3f(cv.x,cv.y,cv.z);
+                        //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
+                        cc = f.v2.vertex;
+                        gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                        gl.glNormal3f(cv.x,cv.y,cv.z);
+                        //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
+                        cc = f.v3.vertex;
+                        gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                        gl.glNormal3f(cv.x,cv.y,cv.z);
+                        //gl.glNormal3f(-cv.x,-cv.y,-cv.z);
+                        cc = f.v4.vertex;
+                        gl.glVertex3f(cc.x,cc.y,cc.z+offset);
+                        gl.glEnd();
+                        //gl.glCullFace(GL2.GL_BACK);
+                    }
                 }
             }
             gl.glDisable(GL2.GL_LIGHTING);
             gl.glEnable(GL2.GL_CULL_FACE);
+            //check if the settings enable the spine view and draw the spine if LAMS.spineEnableObjViewer is true
             if(LAMS.spineEnableObjViewer){
                 for(int i = 0;i<ob.spine.size();i++){
                     gl.glColor3f(LAMS.spineColorObjViewer.getRed()/255.0f,LAMS.spineColorObjViewer.getGreen()/255.0f,LAMS.spineColorObjViewer.getBlue()/255.0f);
