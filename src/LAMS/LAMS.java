@@ -54,6 +54,7 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     static LamToObjConverter lamConverter = new LamToObjConverter();
     static JFileChooser fileChooser = new JFileChooser();
     static JFrame frame;
+    static ToolsMenu toolMenu;
     private JFrame viewSettingsFrame;
     static GLCanvas canvas;
     private FileNameExtensionFilter lamFileFilter = new FileNameExtensionFilter("LAMS Output File (.lam)","lam");
@@ -78,33 +79,57 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     private float distance=100;
     static boolean pointCloudFlag = false;
     static ArrayList<Obj3D> objects;
-    static Color backgroundColorObjViewer = Color.BLACK;
-    static Color xAxisColorObjViewer = Color.GREEN;
-    static Color yAxisColorObjViewer = Color.BLUE;
-    static Color zAxisColorObjViewer = Color.RED;
-    static Color xyGridColorObjViewer = Color.LIGHT_GRAY;
-    static Color spineColorObjViewer = Color.ORANGE;
-    static boolean xAxisEnableObjViewer = false;
-    static boolean yAxisEnableObjViewer = false;
-    static boolean zAxisEnableObjViewer = true;
-    static boolean xyGridEnableObjViewer = true;
-    static boolean spineEnableObjViewer = false;
-    static boolean vertexViewEnable = false;
-    static boolean wireframeViewEnable = false;
+    //color settings
+    //solidView color scheme
+    static Color backgroundColorSolidView = Color.BLACK;
+    static Color xAxisColorSolidView = Color.GREEN;
+    static Color yAxisColorSolidView = Color.BLUE;
+    static Color zAxisColorSolidView = Color.RED;
+    static Color xyGridColorSolidView = Color.LIGHT_GRAY;
+    static Color spineColorSolidView = Color.ORANGE;
+    //wireframeView color scheme
+     static Color backgroundColorWireframeView = Color.BLACK;
+    static Color xAxisColorWireframeView = Color.GREEN;
+    static Color yAxisColorWireframeView = Color.BLUE;
+    static Color zAxisColorWireframeView = Color.RED;
+    static Color xyGridColorWireframeView = Color.LIGHT_GRAY;
+    //static Color spineColorWireframeView = Color.ORANGE;
+    //vertexView color scheme
+    static Color backgroundColorVertexView = Color.BLACK;
+    static Color pointColorVertexView = Color.RED;
+    static Color xAxisColorVertexView = Color.GREEN;
+    static Color yAxisColorVertexView = Color.BLUE;
+    static Color zAxisColorVertexView = Color.RED;
+    static Color xyGridColorVertexView = Color.LIGHT_GRAY;
+    
+    //boolean settings
+    //solidView settings
     static boolean solidViewEnable = true;
+    static boolean xAxisEnableSolidView = false;
+    static boolean yAxisEnableSolidView = false;
+    static boolean zAxisEnableSolidView = true;
+    static boolean xyGridEnableSolidView = true;
+    static boolean spineEnableSolidView = false;
     
+    //wireframeView settings
+    static boolean wireframeViewEnable = false;
+    static boolean xAxisEnableWireframeView = false;
+    static boolean yAxisEnableWireframeView = false;
+    static boolean zAxisEnableWireframeView = true;
+    static boolean xyGridEnableWireframeView = true;
+    //static boolean spineEnableWireframeView = false;
     
-    static Color backgroundColorPointCloudViewer = Color.BLACK;
-    static Color pointColorPointCloudViewer = Color.RED;
-    static Color xAxisColorPointCloudViewer = Color.GREEN;
-    static Color yAxisColorPointCloudViewer = Color.BLUE;
-    static Color zAxisColorPointCloudViewer = Color.RED;
-    static Color xyGridColorPointCloudViewer = Color.LIGHT_GRAY;
-    static boolean xAxisEnablePointCloudViewer = false;
-    static boolean yAxisEnablePointCloudViewer = false;
-    static boolean zAxisEnablePointCloudViewer = true;
-    static boolean xyGridEnablePointCloudViewer = false;
+    //vertexView settings
+    static boolean vertexViewEnable = false;
+    static boolean xAxisEnableVertexView = false;
+    static boolean yAxisEnableVertexView = false;
+    static boolean zAxisEnableVertexView = true;
+    static boolean xyGridEnableVertexView = false;
     static boolean objectInteriorView = false;
+    //tool settings
+    static boolean toolMenuEnable = true;
+    static int toolSelection = 0;
+    static Perimeter selectionBox = new Perimeter();
     static Obj3D focusedObject;
     
     public static void main(String[] args){
@@ -119,23 +144,31 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         objects = new ArrayList<Obj3D>();
         JFrame frame = new JFrame("LAMS 3D Viewer");
         viewSettingsFrame = new JFrame("View Options");
+        //set main menu bar 1st level options
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         JMenu editMenu = new JMenu("Edit");
         JMenu helpMenu = new JMenu("Help");
         JMenu viewMenu = new JMenu("View");
+        JMenu windowMenu = new JMenu("Window");
+        //second level file menu options
         JMenuItem open = new JMenuItem("Open");
         JMenuItem save = new JMenuItem("Save");
         JMenuItem saveAs = new JMenuItem("Save As");
         JMenuItem importLam = new JMenuItem("Import .lam file");
         JMenuItem importObj = new JMenuItem("Import .obj file");
         JMenuItem exportObj = new JMenuItem("Export .obj file");
+        //edit menu second level options
         JMenuItem editObjects = new JMenuItem("Objects");
+        //view menu second level options
         JMenuItem viewSettings = new JMenuItem("Settings");
         JCheckBoxMenuItem viewToggleInteriorView = new JCheckBoxMenuItem("Toggle Interior View");
         JCheckBoxMenuItem wireframeView = new JCheckBoxMenuItem("Wireframe View");
         JCheckBoxMenuItem vertexView = new JCheckBoxMenuItem("Vertex View");
         JCheckBoxMenuItem solidView = new JCheckBoxMenuItem("Solid View");
+        //window menu second level options
+        JCheckBoxMenuItem toolMenuWindowItem = new JCheckBoxMenuItem("Tool Menu");
+        
         solidView.setState(true);
         JMenuItem helpTest = new JMenuItem("test");
         importLam.addActionListener(new ActionListener(){
@@ -220,12 +253,12 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
             public void actionPerformed(ActionEvent ae) {
                 if(LAMS.objectInteriorView){
                     LAMS.objectInteriorView = false;
-                    //LAMS.spineEnableObjViewer = false;
+                    //LAMS.spineEnableSolidView = false;
                     
                 }
                 else{
                     LAMS.objectInteriorView = true;
-                    //LAMS.spineEnableObjViewer = true;
+                    //LAMS.spineEnableSolidView = true;
                 }
             }
             
@@ -240,23 +273,10 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         viewSettings.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                String s = LAMS.backgroundColorObjViewer.getRed() + "," + LAMS.backgroundColorObjViewer.getGreen() + "," + LAMS.backgroundColorObjViewer.getBlue() + ':' + 
-                        LAMS.xAxisColorObjViewer.getRed() + "," + LAMS.xAxisColorObjViewer.getGreen() + "," + LAMS.xAxisColorObjViewer.getBlue() + ':' + 
-                        LAMS.yAxisColorObjViewer.getRed() + "," + LAMS.yAxisColorObjViewer.getGreen() + "," + LAMS.yAxisColorObjViewer.getBlue() + ':' +
-                        LAMS.zAxisColorObjViewer.getRed() + "," + LAMS.zAxisColorObjViewer.getGreen() + "," + LAMS.zAxisColorObjViewer.getBlue() + ':' +
-                        LAMS.xyGridColorObjViewer.getRed() + "," + LAMS.xyGridColorObjViewer.getGreen() + "," + LAMS.xyGridColorObjViewer.getBlue() + ':' +
-                        LAMS.spineColorObjViewer.getRed() + "," + LAMS.spineColorObjViewer.getGreen() + "," + LAMS.spineColorObjViewer.getBlue() + ':' +
-                        LAMS.backgroundColorPointCloudViewer.getRed() + "," + LAMS.backgroundColorPointCloudViewer.getGreen() + "," + LAMS.backgroundColorPointCloudViewer.getBlue() + ':' +
-                        LAMS.pointColorPointCloudViewer.getRed() + "," + LAMS.pointColorPointCloudViewer.getGreen() + "," + LAMS.pointColorPointCloudViewer.getBlue() + ':' +
-                        LAMS.xAxisColorPointCloudViewer.getRed() + "," + LAMS.xAxisColorPointCloudViewer.getGreen() + "," + LAMS.xAxisColorPointCloudViewer.getBlue() + ':' +
-                        LAMS.yAxisColorPointCloudViewer.getRed() + "," + LAMS.yAxisColorPointCloudViewer.getGreen() + "," + LAMS.yAxisColorPointCloudViewer.getBlue() + ':' +
-                        LAMS.zAxisColorPointCloudViewer.getRed() + "," + LAMS.zAxisColorPointCloudViewer.getGreen() + "," + LAMS.zAxisColorPointCloudViewer.getBlue() + ':' +
-                        LAMS.xyGridColorPointCloudViewer.getRed() + "," + LAMS.xyGridColorPointCloudViewer.getGreen() + "," + LAMS.xyGridColorPointCloudViewer.getBlue();
-                        
                 java.awt.EventQueue.invokeLater(new Runnable() {
                     public void run() {
                         
-                        new ViewSettings(s).setVisible(true);
+                        new ViewSettings("").setVisible(true);
                     }
                 });
             }
@@ -326,6 +346,23 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                 }
             }
         });
+        toolMenuWindowItem.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(LAMS.toolMenuEnable){
+                    LAMS.toolMenuEnable = true;
+                    toolMenuWindowItem.setState(true);
+                    LAMS.toolMenu.setVisible(true);
+                }
+                else{
+                    LAMS.toolMenuEnable = false;
+                    toolMenuWindowItem.setState(false);
+                    LAMS.toolMenu.setVisible(false);
+                }
+            }
+            
+        });
+        
         LAMS.canvas = new GLCanvas();
 
         fileMenu.add(open);
@@ -343,17 +380,26 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         viewMenu.add(vertexView);
         viewMenu.add(wireframeView);
         viewMenu.add(solidView);
+        windowMenu.add(toolMenuWindowItem);
         helpMenu.add(helpTest);
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
         menuBar.add(viewMenu);  
+        menuBar.add(windowMenu);
         menuBar.add(helpMenu);
+        
         canvas.addGLEventListener(new LAMS());
         frame.setJMenuBar(menuBar);
         frame.add(canvas);
         frame.setSize(800, 800);
         this.height=800.0f;
         this.width = 800.0f;
+        this.toolMenu = new ToolsMenu();
+        java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        toolMenu.setVisible(true);
+                    }
+                });
         final Animator animator = new Animator(canvas);
         frame.addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
@@ -374,23 +420,11 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
 
     @Override
     public void init(GLAutoDrawable drawable) {
-        //float pos[] = { 5.0f, 5.0f, 10.0f, 0.0f };
-        
         GL2 gl = drawable.getGL().getGL2();
-        
-        //gl.
-        //float pos[] = { 50.0f, 50.0f, 100.0f, 0.0f };
-        //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, pos, 0);
         gl.glEnable(GL2.GL_CULL_FACE);
-        //gl.glEnable(GL2.GL_LIGHTING);
         gl.glEnable(GL2.GL_LIGHT0);
-        /*gl.glEnable(GL2.GL_DEPTH_TEST);*/
-        
         gl.glDepthFunc(GL2.GL_LEQUAL);
-        //gl.glShadeModel(GL2.GL_SMOOTH);
         gl.glEnable(GL2.GL_NORMALIZE);
-        
-        //gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
         
         
         LAMS.canvas.addMouseListener(this);
@@ -404,25 +438,33 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         GL2 gl = drawable.getGL().getGL2();
         GLU glu = new GLU();
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
-        if(LAMS.pointCloudFlag){
-            gl.glClearColor(this.backgroundColorPointCloudViewer.getRed(), this.backgroundColorPointCloudViewer.getGreen(), this.backgroundColorPointCloudViewer.getBlue(), 0f);
+        //set background color schemes based on viewing options
+        if(LAMS.vertexViewEnable){
+            gl.glClearColor(this.backgroundColorVertexView.getRed(), this.backgroundColorVertexView.getGreen(), this.backgroundColorVertexView.getBlue(), 0f);
         }
-        else{
-            gl.glClearColor(this.backgroundColorObjViewer.getRed(), this.backgroundColorObjViewer.getGreen(), this.backgroundColorObjViewer.getBlue(), 0f);
+        else if(LAMS.wireframeViewEnable){
+            gl.glClearColor(this.backgroundColorWireframeView.getRed(), this.backgroundColorWireframeView.getGreen(), this.backgroundColorWireframeView.getBlue(), 0f);
         }
-        
+        else if(LAMS.solidViewEnable){
+            gl.glClearColor(this.backgroundColorSolidView.getRed(), this.backgroundColorSolidView.getGreen(), this.backgroundColorSolidView.getBlue(), 0f);
+        }
+        //set Selection
+        if(LAMS.toolSelection ==1){
+
+
+        }
         
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
         float widthHeightRatio = (float) this.width / (float)this.height;
         glu.gluPerspective(45, widthHeightRatio, 1, 10000);
+        //interior view lighting and culling settings
         if(LAMS.objectInteriorView){
             if(LAMS.focusedObject!=null){
                 glu.gluLookAt(LAMS.focusedObject.center.x,(LAMS.focusedObject.center.z-LAMS.focusedObject.minZ.z),LAMS.focusedObject.maxY.y-15,LAMS.focusedObject.center.x,LAMS.focusedObject.center.z-LAMS.focusedObject.minZ.z,LAMS.focusedObject.maxY.y, 0, 0.5, 0.5);
                 gl.glDisable(GL2.GL_CULL_FACE);
                 gl.glEnable( GL2.GL_LIGHT2 );  
                 gl.glLightfv(GL2.GL_LIGHT2, GL2.GL_POSITION, new float[]{LAMS.focusedObject.center.x,LAMS.focusedObject.maxY.y,LAMS.focusedObject.maxZ.z-LAMS.focusedObject.minZ.z,1.0f}, 0);
-                //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, new float[]{-posX,-posY,posZ,1.0f}, 0);
                 gl.glLightfv(GL2.GL_LIGHT2, GL2.GL_SPECULAR, new float[]{1f, 1f, 1f, 0.5f}, 0);
                 gl.glLightfv(GL2.GL_LIGHT2, GL2.GL_EMISSION, new float[]{1f, 1f, 1f, 0.5f}, 0);
                 gl.glLightfv(GL2.GL_LIGHT2, GL2.GL_AMBIENT, new float[]{0.5f, 0.5f, 0.5f, 0.5f}, 0);
@@ -459,7 +501,7 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         posZ+=transZ;
         
         
-        if(this.pointCloudFlag){
+        /*if(this.pointCloudFlag){
             gl.glDisable(GL2.GL_LIGHTING);
             createGrid(drawable.getGL().getGL2(),50,25);
             this.drawPointCloud(drawable.getGL().getGL2(), this.lamConverter.cartesian);
@@ -467,15 +509,6 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         else{
             gl.glDisable(GL2.GL_LIGHTING);
             createGrid(drawable.getGL().getGL2(), 50,25);
-            /*gl.glEnable( GL2.GL_LIGHTING );  
-            gl.glEnable( GL2.GL_LIGHT0 );  
-            gl.glEnable( GL2.GL_NORMALIZE );
-            // weak RED ambient 
-            float[] ambientLight = { 0.1f, 0.f, 0.f,0f };  
-            gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, ambientLight, 0);
-            // multicolor diffuse 
-            float[] diffuseLight = { 1f,2f,1f,0f };  
-            gl.glLightfv( GL2.GL_LIGHT0, GL2.GL_DIFFUSE, diffuseLight, 0 ); */
             
             gl.glEnable( GL2.GL_LIGHTING );  
             gl.glEnable( GL2.GL_LIGHT0 );  
@@ -495,11 +528,12 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
             gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_DIFFUSE, new float[]{1f, 1f, 1f, 0.5f}, 0);
             
             
-            /**/
+            */
+            gl.glDisable(GL2.GL_LIGHTING);
+            createGrid(drawable.getGL().getGL2(), 50,25);
             this.displayObjects(gl);
-        }
+        //}
         gl.glPopMatrix();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -529,6 +563,11 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
 //        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
     
+    public void selection(GL2 gl){
+        
+        
+    }
+    
     /**
      * displayObjects will cycle through all objects and display them using all relevant settings.
      * @param gl - GL2 object. 
@@ -540,20 +579,21 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
             float offset = ob.minZ.z*-1;
             //lighting needs to be disabled for vertex and edges to be displayed correctly.
             gl.glDisable(GL2.GL_LIGHTING);
+            
             CartesianCoordinate cc;
             CartesianVector cv;
             //check which view is enabled and display the objects using that view.
             if(LAMS.vertexViewEnable){
-                gl.glColor3f(LAMS.pointColorPointCloudViewer.getRed()/255.0f,LAMS.pointColorPointCloudViewer.getGreen()/255.0f,LAMS.pointColorPointCloudViewer.getBlue()/255.0f);
+                gl.glColor3f(LAMS.pointColorVertexView.getRed()/255.0f,LAMS.pointColorVertexView.getGreen()/255.0f,LAMS.pointColorVertexView.getBlue()/255.0f);
                 gl.glPointSize(10);
                 gl.glBegin(GL2.GL_POINTS);
                 for(CartesianCoordinate tempCC:ob.vertices){
+                    
                     gl.glVertex3f(tempCC.x, tempCC.y, tempCC.z+offset);
                 }
                 gl.glEnd();
             }
             else if(LAMS.wireframeViewEnable){
-                gl.glColor3f(1,1,1);
                 for(Edge e:ob.edges){
                     gl.glBegin(GL2.GL_LINES);
                         cc = ob.vertices.get(e.a);
@@ -572,7 +612,6 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                 }
                 gl.glEnable(GL2.GL_LIGHTING);
                 for(Face f:ob.faces){
-
                     if(f.isTriangle){
                         //gl.glCullFace(GL2.GL_FRONT);
                         gl.glBegin(GL2.GL_TRIANGLES);
@@ -619,10 +658,10 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
             }
             gl.glDisable(GL2.GL_LIGHTING);
             gl.glEnable(GL2.GL_CULL_FACE);
-            //check if the settings enable the spine view and draw the spine if LAMS.spineEnableObjViewer is true
-            if(LAMS.spineEnableObjViewer){
+            //check if the settings enable the spine view and draw the spine if LAMS.spineEnableSolidView is true
+            if(LAMS.spineEnableSolidView){
                 for(int i = 0;i<ob.spine.size();i++){
-                    gl.glColor3f(LAMS.spineColorObjViewer.getRed()/255.0f,LAMS.spineColorObjViewer.getGreen()/255.0f,LAMS.spineColorObjViewer.getBlue()/255.0f);
+                    gl.glColor3f(LAMS.spineColorSolidView.getRed()/255.0f,LAMS.spineColorSolidView.getGreen()/255.0f,LAMS.spineColorSolidView.getBlue()/255.0f);
                     gl.glPointSize(10);
                     gl.glBegin(GL2.GL_POINTS);
                     gl.glVertex3f(ob.spine.get(i).x, ob.spine.get(i).y, ob.spine.get(i).z+offset);
@@ -639,8 +678,13 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         }
     }
     
+    /**
+     * 
+     * @param gl
+     * @param cartesian 
+     */
     public void drawPointCloud(GL2 gl, ArrayList<CartesianCoordinate> cartesian){
-        gl.glColor3f(LAMS.pointColorPointCloudViewer.getRed()/255.0f,LAMS.pointColorPointCloudViewer.getGreen()/255.0f,LAMS.pointColorPointCloudViewer.getBlue()/255.0f);
+        gl.glColor3f(LAMS.pointColorVertexView.getRed()/255.0f,LAMS.pointColorVertexView.getGreen()/255.0f,LAMS.pointColorVertexView.getBlue()/255.0f);
         gl.glPointSize(10);
         gl.glBegin(GL2.GL_POINTS);
         for(CartesianCoordinate cc:cartesian){
@@ -649,6 +693,10 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         gl.glEnd();
     }
     
+    /**
+     * 
+     * @param lamFile 
+     */
     public void importLamFile(File lamFile){
         if(!lamFile.equals(null)){
             this.pointCloudFlag=true;
@@ -658,9 +706,23 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
         }
     }
     
+    /**
+     * createGrid method creates a grid on the xy plane 
+     * @param gl - the openGl object on which to draw the grid.
+     * @param gridSize - 
+     * @param gridLineSize 
+     */
     public void createGrid(GL2 gl, int gridSize, int gridLineSize){
-        if(LAMS.pointCloudFlag && LAMS.xyGridEnablePointCloudViewer){
-            gl.glColor3f(LAMS.xyGridColorPointCloudViewer.getRed()/255.0f,LAMS.xyGridColorPointCloudViewer.getGreen()/255.0f,LAMS.xyGridColorPointCloudViewer.getBlue()/255.0f);
+        if((LAMS.vertexViewEnable && LAMS.xyGridEnableVertexView) || (LAMS.wireframeViewEnable && LAMS.xyGridEnableWireframeView) || (LAMS.solidViewEnable && LAMS.xyGridEnableSolidView)){
+            if(LAMS.vertexViewEnable){
+                gl.glColor3f(LAMS.xyGridColorVertexView.getRed()/255.0f,LAMS.xyGridColorVertexView.getGreen()/255.0f,LAMS.xyGridColorVertexView.getBlue()/255.0f);
+            }
+            else if(LAMS.wireframeViewEnable){
+                gl.glColor3f(LAMS.xyGridColorWireframeView.getRed()/255.0f,LAMS.xyGridColorWireframeView.getGreen()/255.0f,LAMS.xyGridColorWireframeView.getBlue()/255.0f);
+            }
+            else if(LAMS.solidViewEnable){
+                gl.glColor3f(LAMS.xyGridColorSolidView.getRed()/255.0f,LAMS.xyGridColorSolidView.getGreen()/255.0f,LAMS.xyGridColorSolidView.getBlue()/255.0f);
+            }
             for(int i = -gridSize/2;i<gridSize/2;i++){
                 for(int j = -gridSize/2;j<gridSize/2;j++){
                     gl.glBegin (GL2.GL_LINES);
@@ -674,58 +736,46 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
                 }
             }
         }
-        else if (LAMS.xyGridEnableObjViewer && !LAMS.pointCloudFlag){
-            gl.glColor3f(LAMS.xyGridColorObjViewer.getRed()/255.0f,LAMS.xyGridColorObjViewer.getGreen()/255.0f,LAMS.xyGridColorObjViewer.getBlue()/255.0f);
-            for(int i = -gridSize/2;i<gridSize/2;i++){
-                for(int j = -gridSize/2;j<gridSize/2;j++){
-                    gl.glBegin (GL2.GL_LINES);
-                    gl.glVertex3f(-gridLineSize, j, 0.0f);
-                    gl.glVertex3f(gridLineSize, j, 0.0f);
-                    gl.glEnd();
-                    gl.glBegin (GL2.GL_LINES);
-                    gl.glVertex3f(i, -gridLineSize, 0.0f);
-                    gl.glVertex3f(i, gridLineSize, 0.0f);
-                    gl.glEnd();
-                }
+        if((LAMS.vertexViewEnable && LAMS.zAxisEnableVertexView) || (LAMS.wireframeViewEnable && LAMS.zAxisEnableWireframeView) || (LAMS.solidViewEnable && LAMS.zAxisEnableSolidView)){
+            if(LAMS.vertexViewEnable){
+                gl.glColor3f(LAMS.zAxisColorVertexView.getRed()/255.0f,LAMS.zAxisColorVertexView.getGreen()/255.0f,LAMS.zAxisColorVertexView.getBlue()/255.0f);
             }
-        }
-        if(LAMS.pointCloudFlag && LAMS.zAxisEnablePointCloudViewer){
-            gl.glColor3f(LAMS.zAxisColorPointCloudViewer.getRed()/255.0f,LAMS.zAxisColorPointCloudViewer.getGreen()/255.0f,LAMS.zAxisColorPointCloudViewer.getBlue()/255.0f);
+            else if(LAMS.wireframeViewEnable){
+                gl.glColor3f(LAMS.zAxisColorWireframeView.getRed()/255.0f,LAMS.zAxisColorWireframeView.getGreen()/255.0f,LAMS.zAxisColorWireframeView.getBlue()/255.0f);
+            }
+            else if(LAMS.solidViewEnable){
+                gl.glColor3f(LAMS.zAxisColorSolidView.getRed()/255.0f,LAMS.zAxisColorSolidView.getGreen()/255.0f,LAMS.zAxisColorSolidView.getBlue()/255.0f);
+            }
             gl.glBegin (GL2.GL_LINES);
             gl.glVertex3f(0,0,-1000);
             gl.glVertex3f(0,0,1000);
             gl.glEnd();
         }
-        else if(LAMS.zAxisEnableObjViewer && !LAMS.pointCloudFlag){
-            gl.glColor3f(LAMS.zAxisColorObjViewer.getRed()/255.0f,LAMS.zAxisColorObjViewer.getGreen()/255.0f,LAMS.zAxisColorObjViewer.getBlue()/255.0f);
-            gl.glBegin (GL2.GL_LINES);
-            gl.glVertex3f(0,0,-1000);
-            gl.glVertex3f(0,0,1000);
-            gl.glEnd();
-        }
-        if(LAMS.pointCloudFlag && LAMS.yAxisEnablePointCloudViewer){
-            gl.glColor3f(LAMS.yAxisColorPointCloudViewer.getRed()/255.0f,LAMS.yAxisColorPointCloudViewer.getGreen()/255.0f,LAMS.yAxisColorPointCloudViewer.getBlue()/255.0f);
-            gl.glBegin (GL2.GL_LINES);
-            gl.glVertex3f(0,-1000,0);
-            gl.glVertex3f(0,1000,0);
-            gl.glEnd();
-        }
-        else if(LAMS.yAxisEnableObjViewer && !LAMS.pointCloudFlag){
-            gl.glColor3f(LAMS.yAxisColorObjViewer.getRed()/255.0f,LAMS.yAxisColorObjViewer.getGreen()/255.0f,LAMS.yAxisColorObjViewer.getBlue()/255.0f);
+        if((LAMS.vertexViewEnable && LAMS.yAxisEnableVertexView) || (LAMS.wireframeViewEnable && LAMS.yAxisEnableWireframeView) || (LAMS.solidViewEnable && LAMS.yAxisEnableSolidView)){
+            if(LAMS.vertexViewEnable){
+                gl.glColor3f(LAMS.yAxisColorVertexView.getRed()/255.0f,LAMS.yAxisColorVertexView.getGreen()/255.0f,LAMS.yAxisColorVertexView.getBlue()/255.0f);
+            }
+            else if(LAMS.wireframeViewEnable){
+                gl.glColor3f(LAMS.yAxisColorWireframeView.getRed()/255.0f,LAMS.yAxisColorWireframeView.getGreen()/255.0f,LAMS.yAxisColorWireframeView.getBlue()/255.0f);
+            }
+            else if(LAMS.solidViewEnable){
+                gl.glColor3f(LAMS.yAxisColorSolidView.getRed()/255.0f,LAMS.yAxisColorSolidView.getGreen()/255.0f,LAMS.yAxisColorSolidView.getBlue()/255.0f);
+            }
             gl.glBegin (GL2.GL_LINES);
             gl.glVertex3f(0,-1000,0);
             gl.glVertex3f(0,1000,0);
             gl.glEnd();
         }
-        if(LAMS.pointCloudFlag && LAMS.xAxisEnablePointCloudViewer){
-            gl.glColor3f(LAMS.xAxisColorPointCloudViewer.getRed()/255.0f,LAMS.xAxisColorPointCloudViewer.getGreen()/255.0f,LAMS.xAxisColorPointCloudViewer.getBlue()/255.0f);
-            gl.glBegin (GL2.GL_LINES);
-            gl.glVertex3f(-1000,0,0);
-            gl.glVertex3f(1000,0,0);
-            gl.glEnd();
-        }
-        else if(LAMS.xAxisEnableObjViewer && !LAMS.pointCloudFlag){
-            gl.glColor3f(LAMS.xAxisColorObjViewer.getRed()/255.0f,LAMS.xAxisColorObjViewer.getGreen()/255.0f,LAMS.xAxisColorObjViewer.getBlue()/255.0f);
+        if((LAMS.vertexViewEnable && LAMS.xAxisEnableVertexView) || (LAMS.wireframeViewEnable && LAMS.xAxisEnableWireframeView) || (LAMS.solidViewEnable && LAMS.xAxisEnableSolidView)){
+            if(LAMS.vertexViewEnable){
+                gl.glColor3f(LAMS.xAxisColorVertexView.getRed()/255.0f,LAMS.xAxisColorVertexView.getGreen()/255.0f,LAMS.xAxisColorVertexView.getBlue()/255.0f);
+            }
+            else if(LAMS.wireframeViewEnable){
+                gl.glColor3f(LAMS.xAxisColorWireframeView.getRed()/255.0f,LAMS.xAxisColorWireframeView.getGreen()/255.0f,LAMS.xAxisColorWireframeView.getBlue()/255.0f);
+            }
+            else if(LAMS.solidViewEnable){
+                gl.glColor3f(LAMS.xAxisColorSolidView.getRed()/255.0f,LAMS.xAxisColorSolidView.getGreen()/255.0f,LAMS.xAxisColorSolidView.getBlue()/255.0f);
+            }
             gl.glBegin (GL2.GL_LINES);
             gl.glVertex3f(-1000,0,0);
             gl.glVertex3f(1000,0,0);
@@ -739,27 +789,33 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
     
   // Methods required for the implementation of MouseMotionListener
     public void mouseDragged(MouseEvent e) {
-        if(this.mouseButton==1){
-            int newX = e.getX();
-            int newY = e.getY();
-            Dimension size = e.getComponent().getSize();
+        if(LAMS.toolSelection==0){
+            if(this.mouseButton==1){
+                int newX = e.getX();
+                int newY = e.getY();
+                Dimension size = e.getComponent().getSize();
 
-            float thetaY = 360.0f * ( (float)(newX-this.x)/((float)size.width));
-            float thetaX = 360.0f * ( (float)(newY-this.y)/((float)size.height));
+                float thetaY = 360.0f * ( (float)(newX-this.x)/((float)size.width));
+                float thetaX = 360.0f * ( (float)(newY-this.y)/((float)size.height));
 
-            this.x = newX;
-            this.y = newY;
+                this.x = newX;
+                this.y = newY;
 
-            rotx += thetaX;
-            roty += thetaY;
+                rotx += thetaX;
+                roty += thetaY;
+            }
+            else if(this.mouseButton==3){
+                int newX = e.getX();
+                int newY = e.getY();
+                this.transX += ((float)(newX-this.x))/10;
+                this.transY += ((float)(newY-this.y))/10;
+                this.x = newX;
+                this.y = newY;
+            }
         }
-        else if(this.mouseButton==3){
-            int newX = e.getX();
-            int newY = e.getY();
-            this.transX += ((float)(newX-this.x))/10;
-            this.transY += ((float)(newY-this.y))/10;
-            this.x = newX;
-            this.y = newY;
+        else if(LAMS.toolSelection == 1){
+            LAMS.selectionBox.x2 = e.getX();
+            LAMS.selectionBox.y2 = e.getY();
         }
     }
     
@@ -769,15 +825,25 @@ public class LAMS implements GLEventListener, MouseListener, MouseMotionListener
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        LAMS.selectionBox.x1 = me.getX()-5;
+        LAMS.selectionBox.y1 = me.getY()-5;
+        LAMS.selectionBox.x2 = me.getX()+5;
+        LAMS.selectionBox.y2 = me.getY()+5;
     }
 
     @Override
     public void mousePressed(MouseEvent me) {
-        this.mouseButton = me.getButton();
-        this.x=me.getX();
-        this.y=me.getY();
-        this.z=me.getY();
+        if(LAMS.toolSelection==0){
+            this.mouseButton = me.getButton();
+            this.x=me.getX();
+            this.y=me.getY();
+            this.z=me.getY();
+        }
+        else if(LAMS.toolSelection ==1){
+            LAMS.selectionBox.x1 = me.getX();
+            LAMS.selectionBox.y1 = me.getY();
+        }
     }
 
     @Override
